@@ -14,7 +14,6 @@ public class testing {
 		for (Usuario usuario : lista) {
 			System.out.println(usuario);
 		}
-		
 	}
 
 }

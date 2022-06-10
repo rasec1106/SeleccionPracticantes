@@ -19,7 +19,7 @@ public class GestorUsuario implements IGestorUsuario {
 		PreparedStatement stm = null;
 		try {
 			cn = MySQLConnection.getConnection();
-			String sql = "SELECT * FROM Users";
+			String sql = "SELECT * FROM tb_User";
 			stm = cn.prepareStatement(sql);
 			rs = stm.executeQuery();
 			while (rs.next()) {
