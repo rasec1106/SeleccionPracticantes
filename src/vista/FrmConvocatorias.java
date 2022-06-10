@@ -4,13 +4,44 @@ import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.toedter.components.JSpinField;
+
+import gestores.GestorArea;
+import gestores.GestorConvocatoria;
+
+import com.toedter.calendar.JDateChooser;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+//Importar las clases
+import model.Convocatoria;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FrmConvocatorias extends JInternalFrame {
 	private JTextField txtID;
 	private JTextField txtNombre;
 	private JTextField txtDescripcion;
+	private JTextField txtPosicion;
+	private JTable tblLista;
+	
+	GestorConvocatoria gestor = new GestorConvocatoria();
+	
+	//Declarando lista
+	private List<Convocatoria> convocatoria = new ArrayList<Convocatoria>();
+	private JDateChooser dateInicio;
+	private JDateChooser dateFin;
+	private JComboBox cboArea;
 
 	/**
 	 * Launch the application.
@@ -32,7 +63,7 @@ public class FrmConvocatorias extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmConvocatorias() {
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 674, 573);
 		getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("REGISTRO DE CONVOCATORIAS");
@@ -82,13 +113,143 @@ public class FrmConvocatorias extends JInternalFrame {
 		txtDescripcion.setBounds(196, 107, 118, 20);
 		getContentPane().add(txtDescripcion);
 		
-		JSpinField spinField = new JSpinField();
-		spinField.setBounds(196, 141, 118, 20);
-		getContentPane().add(spinField);
+		dateInicio = new JDateChooser();
+		dateInicio.setBounds(196, 138, 118, 20);
+		getContentPane().add(dateInicio);
 		
-		JSpinField spinField_1 = new JSpinField();
-		spinField_1.setBounds(196, 172, 118, 20);
-		getContentPane().add(spinField_1);
+		dateFin = new JDateChooser();
+		dateFin.setBounds(196, 172, 118, 20);
+		getContentPane().add(dateFin);
+		
+		txtPosicion = new JTextField();
+		txtPosicion.setBounds(196, 200, 118, 20);
+		getContentPane().add(txtPosicion);
+		txtPosicion.setColumns(10);
+		
+		cboArea = new JComboBox();
+		cboArea.setBounds(196, 234, 118, 22);
+		getContentPane().add(cboArea);
+		
+		JButton btnRegistrar = new JButton("Registrar");
+		btnRegistrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnRegistrar(e);
+			}
+		});
+		btnRegistrar.setBounds(335, 44, 89, 23);
+		getContentPane().add(btnRegistrar);
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnEditar(e);
+			}
+		});
+		btnEditar.setBounds(335, 75, 89, 23);
+		getContentPane().add(btnEditar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnEliminar(e);
+			}
+		});
+		btnEliminar.setBounds(335, 106, 89, 23);
+		getContentPane().add(btnEliminar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 295, 638, 237);
+		getContentPane().add(scrollPane);
+		
+		tblLista = new JTable();
+		tblLista.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID", "Nombre", "Descripcion", "Dia de Inicio", "Dia de Fin", "Posicion", "Area"
+			}
+		));
+		scrollPane.setViewportView(tblLista);
+		
+		CargarLista();
 
+	}
+	void CargarLista() {
+		ArrayList<Convocatoria> lista = gestor.listar();
+		
+		DefaultTableModel modelo = (DefaultTableModel) tblLista.getModel();
+		modelo.getDataVector().clear();
+		
+		for(Convocatoria obj : lista) {
+			Object[] data = {obj.getId(), obj.getName(), obj.getDescription(), obj.getStartDate(), obj.getEndDate(), obj.getPosition(), obj.getArea()};
+			modelo.addRow(data);
+		}
+		
+	}
+
+	protected void actionPerformedBtnRegistrar(ActionEvent e) {
+		Convocatoria obj = new Convocatoria();
+		obj.setId(txtID.getText());
+		int resultado = gestor.registrar(obj);
+		
+		if (resultado == 1) {
+			JOptionPane.showMessageDialog(this, "Se registro la convocatoria");
+			CargarLista();
+			limpiarFormulario();
+		} else {
+			JOptionPane.showMessageDialog(this, "No se pudo registrar la convocatoria");
+		}
+	}
+	private void limpiarFormulario() {
+		txtID.setText("");
+		txtNombre.setText("");
+		txtDescripcion.setText("");
+		txtPosicion.setText("");
+		
+	}
+	private GestorArea gestorArea = new GestorArea();
+
+	protected void actionPerformedBtnEditar(ActionEvent e) {
+		
+		if(txtID.getText() != "") {
+			Convocatoria obj = new Convocatoria();
+			obj.setId(txtID.getText());
+			obj.setName(txtNombre.getText());
+			obj.setDescription(txtDescripcion.getText());
+			obj.setStartDate(new SimpleDateFormat("yyyy-MM-dd").format(dateInicio.getDate()));
+			obj.setEndDate(new SimpleDateFormat("yyyy-MM-dd").format(dateFin.getDate()));
+			obj.setPosition(txtPosicion.getText());
+			obj.setArea(gestorArea.obtener(Integer.parseInt(cboArea.getInt())));
+			
+			
+			int resultado = gestor.actualizar(obj);
+			
+			if (resultado == 1) {
+				JOptionPane.showMessageDialog(this, "Se actualizó la convocatoria");
+				CargarLista();
+				limpiarFormulario();
+			} else {
+				JOptionPane.showMessageDialog(this, "No se pudo actualizar la convocatoria");
+			}
+			
+		}
+	}
+	protected void actionPerformedBtnEliminar(ActionEvent e) {
+		if(txtID.getText() != "") {
+			if(JOptionPane.showConfirmDialog(null, "Se eliminara el registro seleccionado, ¿Desea continuar?",
+					"Convocatorias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				int codigo = Integer.parseInt(txtID.getText());
+				
+				int resultado = gestor.eliminar(codigo);
+				
+				if (resultado == 1) {
+					JOptionPane.showMessageDialog(this, "Se elimino la convocatoria");
+					CargarLista();
+					limpiarFormulario();
+				} else {
+					JOptionPane.showMessageDialog(this, "No se pudo eliminar la convocatoria");
+				}
+			}
+		}
 	}
 }

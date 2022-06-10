@@ -2,7 +2,7 @@ package model;
 
 public class Convocatoria {
 	
-	private int id;
+	private String id;
 	private String name;
 	private String description;
 	private String startDate;
@@ -16,7 +16,7 @@ public class Convocatoria {
 	public Convocatoria() {
 		super();
 	}
-	public Convocatoria(int id, String name, String description, String startDate, String endDate, String position,
+	public Convocatoria(String id, String name, String description, String startDate, String endDate, String position,
 			Area area) {
 		super();
 		this.id = id;
@@ -28,10 +28,10 @@ public class Convocatoria {
 		this.area = area;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {

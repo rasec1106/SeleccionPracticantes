@@ -25,7 +25,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 			rs = stm.executeQuery();
 			while (rs.next()) {
 				Convocatoria obj = new Convocatoria();
-				obj.setId(rs.getInt("id"));
+				obj.setId(rs.getString("id"));
 				obj.setName(rs.getString("name"));
 				obj.setDescription(rs.getString("Description"));
 				obj.setStartDate(rs.getString("startDate"));
@@ -45,6 +45,136 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 			}
 		}
 		return lista;
+	}
+
+	@Override
+	public int registrar(Convocatoria obj) {
+		int resultado = -1;
+		Connection cn = null;
+		PreparedStatement stm = null;
+		
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "INSERT INTO tb_Proposal(id, name, description, startDate, endDate, position, idArea) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			stm = cn.prepareStatement(sql);
+			stm.setString(1,obj.getId());
+			stm.setString(2,obj.getName());
+			stm.setString(3,obj.getDescription());
+			stm.setString(4,obj.getStartDate());
+			stm.setString(5,obj.getEndDate());
+			stm.setString(6,obj.getPosition());
+			stm.setInt(7,obj.getArea());
+			resultado = stm.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		
+		return resultado;
+	}
+
+	@Override
+	public int actualizar(Convocatoria obj) {
+		int resultado = -1;
+		Connection cn = null;
+		PreparedStatement stm = null;
+		
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "UPDATE tb_Proposal SET name = ?, description = ?, startDate = ?, endDate = ?, position = ?, idArea = ?  "
+					+ "WHERE id = ?";
+			stm = cn.prepareStatement(sql);
+			stm.setString(1,obj.getName());
+			stm.setString(2,obj.getDescription());
+			stm.setString(3,obj.getStartDate());
+			stm.setString(4,obj.getEndDate());
+			stm.setString(5,obj.getPosition());
+			stm.setInt(6,obj.getArea());
+			stm.setString(7,obj.getId());
+			resultado = stm.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		
+		return resultado;
+	}
+
+	@Override
+	public int eliminar(int codigo) {
+		int resultado = -1;
+		Connection cn = null;
+		PreparedStatement stm = null;
+		
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "DELETE FROM tb_Proposal WHERE id = ?";
+			stm = cn.prepareStatement(sql);
+			stm.setInt(1, codigo);
+			resultado = stm.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		
+		return resultado;
+	}
+
+	@Override
+	public Convocatoria obtener(int id) {
+		Convocatoria obj = new Convocatoria();
+		ResultSet rs = null;
+		Connection cn = null;
+		PreparedStatement stm = null;
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "SELECT * FROM tb_Proposal WHERE id = ?";
+			stm = cn.prepareStatement(sql);
+			stm.setInt(1, id);
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				obj.setId(rs.getString("id"));
+				obj.setName(rs.getString("name"));
+				obj.setDescription(rs.getString("Description"));
+				obj.setStartDate(rs.getString("startDate"));
+				obj.setEndDate(rs.getString("endDate"));
+				obj.setPosition(rs.getString("position"));
+				obj.setArea(gestorArea.obtener(rs.getInt("idArea")) );
+			}
+		}catch (Exception e) {
+			System.out.println("Error en BD : " + e.getMessage());
+		} finally {
+			try {
+				if(stm != null) stm.close();
+				if(cn != null) cn.close();
+			} catch (Exception e2) {
+				System.out.println("Error en Finally : " + e2.getMessage());
+			}
+		}
+		
+		return obj;
 	}
 
 }
