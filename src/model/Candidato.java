@@ -8,6 +8,7 @@ public class Candidato {
 	private String email;
 	private String birthDate;
 	private String curriculum;
+	private Convocatoria proposal;
 	
 	public Candidato() {
 		super();
@@ -57,7 +58,12 @@ public class Candidato {
 	public void setCurriculum(String curriculum) {
 		this.curriculum = curriculum;
 	}
-	
+	public Convocatoria getProposal() {
+		return proposal;
+	}
+	public void setProposal(Convocatoria proposal) {
+		this.proposal = proposal;
+	}
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

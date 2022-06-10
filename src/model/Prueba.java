@@ -3,16 +3,16 @@ package model;
 public class Prueba {
 	private int id;
 	private String name;
-	private Candidato[] candidates;
+	private Pregunta[] questions;
 	
 	public Prueba() {
 		super();
 	}
-	public Prueba(int id, String name, Candidato[] candidates) {
+	public Prueba(int id, String name, Pregunta[] questions) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.candidates = candidates;
+		this.questions = questions;
 	}
 	public int getId() {
 		return id;
@@ -26,11 +26,11 @@ public class Prueba {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Candidato[] getCandidates() {
-		return candidates;
+	public Pregunta[] getQuestions() {
+		return questions;
 	}
-	public void setCandidates(Candidato[] candidates) {
-		this.candidates = candidates;
+	public void setQuestions(Pregunta[] questions) {
+		this.questions = questions;
 	}
 
 }

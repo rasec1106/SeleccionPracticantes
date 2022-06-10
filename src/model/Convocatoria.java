@@ -9,6 +9,9 @@ public class Convocatoria {
 	private String endDate;
 	private String position;
 	private Area area;
+	private Candidato[] candidates;
+	private Prueba test;
+	private Resultado[] results;
 	
 	public Convocatoria() {
 		super();
@@ -24,6 +27,7 @@ public class Convocatoria {
 		this.position = position;
 		this.area = area;
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -65,6 +69,24 @@ public class Convocatoria {
 	}
 	public void setArea(Area area) {
 		this.area = area;
+	}
+	public Candidato[] getCandidates() {
+		return candidates;
+	}
+	public void setCandidates(Candidato[] candidates) {
+		this.candidates = candidates;
+	}
+	public Prueba getTest() {
+		return test;
+	}
+	public void setTest(Prueba test) {
+		this.test = test;
+	}
+	public Resultado[] getResults() {
+		return results;
+	}
+	public void setResults(Resultado[] results) {
+		this.results = results;
 	}
 
 }
