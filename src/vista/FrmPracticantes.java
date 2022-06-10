@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Font;
 
 public class FrmPracticantes extends JInternalFrame {
 	private JTextField txtID;
@@ -43,7 +44,8 @@ public class FrmPracticantes extends JInternalFrame {
 		getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("REGISTRO DE PRACTICANTES");
-		lblNewLabel.setBounds(22, 36, 167, 14);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel.setBounds(24, 33, 236, 39);
 		getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Id de Practicante");
