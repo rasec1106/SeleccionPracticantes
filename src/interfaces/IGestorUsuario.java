@@ -6,4 +6,6 @@ import model.Usuario;
 
 public interface IGestorUsuario {
 	public ArrayList<Usuario> listar();
+	
+	public Usuario obtener(int id);
 }

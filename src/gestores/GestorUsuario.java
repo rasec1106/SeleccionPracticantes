@@ -42,4 +42,10 @@ public class GestorUsuario implements IGestorUsuario {
 		return lista;
 	}
 
+	@Override
+	public Usuario obtener(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
