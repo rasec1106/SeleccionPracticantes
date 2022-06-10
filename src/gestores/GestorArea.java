@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import interfaces.IGestorArea;
 import model.Area;
-import model.Usuario;
 import util.MySQLConnection;
 
 public class GestorArea implements IGestorArea {
