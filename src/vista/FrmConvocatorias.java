@@ -6,7 +6,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import com.toedter.components.JSpinField;
 
 import gestores.GestorArea;
 import gestores.GestorConvocatoria;
@@ -18,30 +17,37 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import model.Area;
 //Importar las clases
 import model.Convocatoria;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FrmConvocatorias extends JInternalFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txtID;
 	private JTextField txtNombre;
 	private JTextField txtDescripcion;
 	private JTextField txtPosicion;
 	private JTable tblLista;
 	
-	GestorConvocatoria gestor = new GestorConvocatoria();
+	private GestorConvocatoria gestor = new GestorConvocatoria();
+	private GestorArea gestorArea = new GestorArea();
+	private ArrayList<Area> listaAreas = gestorArea.listar();
 	
-	//Declarando lista
-	private List<Convocatoria> convocatoria = new ArrayList<Convocatoria>();
 	private JDateChooser dateInicio;
 	private JDateChooser dateFin;
-	private JComboBox cboArea;
+	private JComboBox<Area> cboArea;
 
 	/**
 	 * Launch the application.
@@ -99,6 +105,7 @@ public class FrmConvocatorias extends JInternalFrame {
 		getContentPane().add(lblArea);
 		
 		txtID = new JTextField();
+		txtID.setEnabled(false);
 		txtID.setBounds(196, 45, 118, 20);
 		getContentPane().add(txtID);
 		txtID.setColumns(10);
@@ -126,7 +133,7 @@ public class FrmConvocatorias extends JInternalFrame {
 		getContentPane().add(txtPosicion);
 		txtPosicion.setColumns(10);
 		
-		cboArea = new JComboBox();
+		cboArea = new JComboBox<Area>();
 		cboArea.setBounds(196, 234, 118, 22);
 		getContentPane().add(cboArea);
 		
@@ -162,6 +169,12 @@ public class FrmConvocatorias extends JInternalFrame {
 		getContentPane().add(scrollPane);
 		
 		tblLista = new JTable();
+		tblLista.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tblListaMouseClicked(e);
+			}
+		});
 		tblLista.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -172,26 +185,41 @@ public class FrmConvocatorias extends JInternalFrame {
 		scrollPane.setViewportView(tblLista);
 		
 		CargarLista();
-
+		CargarCboArea();
+		limpiarFormulario();
 	}
-	void CargarLista() {
-		ArrayList<Convocatoria> lista = gestor.listar();
+	private void CargarCboArea() {
+		cboArea.removeAllItems();
 		
+		for(Area area: listaAreas) {
+			cboArea.addItem(area);
+		}
+	}
+	private void CargarLista() {
+		ArrayList<Convocatoria> lista = gestor.listar();		
 		DefaultTableModel modelo = (DefaultTableModel) tblLista.getModel();
-		modelo.getDataVector().clear();
-		
+		modelo.getDataVector().clear();		
 		for(Convocatoria obj : lista) {
 			Object[] data = {obj.getId(), obj.getName(), obj.getDescription(), obj.getStartDate(), obj.getEndDate(), obj.getPosition(), obj.getArea()};
 			modelo.addRow(data);
-		}
-		
+		}		
+	}
+	
+	private Convocatoria getDataFromForm() {
+		Convocatoria obj = new Convocatoria();
+		obj.setId(Integer.parseInt(txtID.getText()));
+		obj.setName(txtNombre.getText());
+		obj.setDescription(txtDescripcion.getText());
+		obj.setStartDate(new SimpleDateFormat("yyyy-MM-dd").format(dateInicio.getDate()));
+		obj.setEndDate(new SimpleDateFormat("yyyy-MM-dd").format(dateFin.getDate()));
+		obj.setPosition(txtPosicion.getText());
+		obj.setArea((Area)cboArea.getSelectedItem());
+		return obj;
 	}
 
 	protected void actionPerformedBtnRegistrar(ActionEvent e) {
-		Convocatoria obj = new Convocatoria();
-		obj.setId(txtID.getText());
-		int resultado = gestor.registrar(obj);
-		
+		Convocatoria obj = getDataFromForm();		
+		int resultado = gestor.registrar(obj);		
 		if (resultado == 1) {
 			JOptionPane.showMessageDialog(this, "Se registro la convocatoria");
 			CargarLista();
@@ -199,49 +227,38 @@ public class FrmConvocatorias extends JInternalFrame {
 		} else {
 			JOptionPane.showMessageDialog(this, "No se pudo registrar la convocatoria");
 		}
+		limpiarFormulario();
 	}
 	private void limpiarFormulario() {
 		txtID.setText("");
 		txtNombre.setText("");
 		txtDescripcion.setText("");
+		dateInicio.setDate(new Date());
+		dateFin.setDate(new Date());
 		txtPosicion.setText("");
-		
+		cboArea.setSelectedIndex(-1);
 	}
-	private GestorArea gestorArea = new GestorArea();
 
-	protected void actionPerformedBtnEditar(ActionEvent e) {
-		
+	protected void actionPerformedBtnEditar(ActionEvent e) {		
 		if(txtID.getText() != "") {
-			Convocatoria obj = new Convocatoria();
-			obj.setId(txtID.getText());
-			obj.setName(txtNombre.getText());
-			obj.setDescription(txtDescripcion.getText());
-			obj.setStartDate(new SimpleDateFormat("yyyy-MM-dd").format(dateInicio.getDate()));
-			obj.setEndDate(new SimpleDateFormat("yyyy-MM-dd").format(dateFin.getDate()));
-			obj.setPosition(txtPosicion.getText());
-			obj.setArea(gestorArea.obtener(Integer.parseInt(cboArea.getInt())));
-			
-			
-			int resultado = gestor.actualizar(obj);
-			
+			Convocatoria obj = getDataFromForm();			
+			int resultado = gestor.actualizar(obj);			
 			if (resultado == 1) {
-				JOptionPane.showMessageDialog(this, "Se actualizó la convocatoria");
+				JOptionPane.showMessageDialog(this, "Se actualizo la convocatoria");
 				CargarLista();
 				limpiarFormulario();
 			} else {
 				JOptionPane.showMessageDialog(this, "No se pudo actualizar la convocatoria");
-			}
-			
+			}			
 		}
 	}
+	
 	protected void actionPerformedBtnEliminar(ActionEvent e) {
 		if(txtID.getText() != "") {
-			if(JOptionPane.showConfirmDialog(null, "Se eliminara el registro seleccionado, ¿Desea continuar?",
+			if(JOptionPane.showConfirmDialog(null, "Se eliminara el registro seleccionado, �Desea continuar?",
 					"Convocatorias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				int codigo = Integer.parseInt(txtID.getText());
-				
-				int resultado = gestor.eliminar(codigo);
-				
+				int codigo = Integer.parseInt(txtID.getText());				
+				int resultado = gestor.eliminar(codigo);				
 				if (resultado == 1) {
 					JOptionPane.showMessageDialog(this, "Se elimino la convocatoria");
 					CargarLista();
@@ -250,6 +267,33 @@ public class FrmConvocatorias extends JInternalFrame {
 					JOptionPane.showMessageDialog(this, "No se pudo eliminar la convocatoria");
 				}
 			}
+		}
+	}
+	
+	protected void tblListaMouseClicked(MouseEvent e) {
+		
+		int id = (int) tblLista.getValueAt(tblLista.getSelectedRow(), 0);
+		Convocatoria c = gestor.obtener(id);
+		setDataToForm(c);		
+	}
+	
+	private void setDataToForm(Convocatoria obj) {
+		try {				
+			txtID.setText(obj.getId()+"");
+			txtNombre.setText(obj.getName());
+			txtDescripcion.setText(obj.getDescription());
+			dateInicio.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getStartDate()));
+			dateFin.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getEndDate()));
+			txtPosicion.setText(obj.getPosition());
+			for(Area a: listaAreas) {
+				if (a.getId() == obj.getArea().getId()) {
+					cboArea.setSelectedItem(a);
+				}
+			}			
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

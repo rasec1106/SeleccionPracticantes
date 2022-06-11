@@ -15,11 +15,15 @@ import java.awt.event.ActionEvent;
 
 public class FrmPrincipal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JDesktopPane escritorio;
 	
 	// Definir nuestros JInternalFrames
-	private FrmPracticantes frmPracticantes = new FrmPracticantes();
+	private FrmCandidatos frmCandidatos = new FrmCandidatos();
 	private FrmConvocatorias frmConvocatorias = new FrmConvocatorias();
 	private FrmPruebas frmPruebas = new FrmPruebas();
 	private FrmListadoPracticantes frmListadoPracticantes = new FrmListadoPracticantes();
@@ -130,13 +134,13 @@ public class FrmPrincipal extends JFrame {
 	}
 
 	private void inicializarVentanas() {
-		escritorio.add(frmPracticantes);
+		escritorio.add(frmCandidatos);
 		escritorio.add(frmConvocatorias);
 		escritorio.add(frmPruebas);
 		escritorio.add(frmListadoPracticantes);
 		escritorio.add(frmListadoConvocatorias);
 		escritorio.add(frmListadoPruebas);
-		frmPracticantes.setVisible(false);
+		frmCandidatos.setVisible(false);
 		frmConvocatorias.setVisible(false);
 		frmPruebas.setVisible(false);
 		frmListadoPracticantes.setVisible(false);
@@ -149,7 +153,7 @@ public class FrmPrincipal extends JFrame {
 		System.exit(DISPOSE_ON_CLOSE);
 	}
 	protected void actionPerformedMnuPracticantes(ActionEvent e) {
-		frmPracticantes.setVisible(true);
+		frmCandidatos.setVisible(true);
 	}
 	protected void actionPerformedMnuConvocatorias(ActionEvent e) {
 		frmConvocatorias.setVisible(true);

@@ -25,7 +25,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 			rs = stm.executeQuery();
 			while (rs.next()) {
 				Convocatoria obj = new Convocatoria();
-				obj.setId(rs.getString("id"));
+				obj.setId(rs.getInt("id"));
 				obj.setName(rs.getString("name"));
 				obj.setDescription(rs.getString("Description"));
 				obj.setStartDate(rs.getString("startDate"));
@@ -55,16 +55,15 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 		
 		try {
 			cn = MySQLConnection.getConnection();
-			String sql = "INSERT INTO tb_Proposal(id, name, description, startDate, endDate, position, idArea) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO tb_Proposal(name, description, startDate, endDate, position, idArea) "
+					+ "VALUES (?, ?, ?, ?, ?, ?)";
 			stm = cn.prepareStatement(sql);
-			stm.setString(1,obj.getId());
-			stm.setString(2,obj.getName());
-			stm.setString(3,obj.getDescription());
-			stm.setString(4,obj.getStartDate());
-			stm.setString(5,obj.getEndDate());
-			stm.setString(6,obj.getPosition());
-			stm.setInt(7,obj.getArea());
+			stm.setString(1,obj.getName());
+			stm.setString(2,obj.getDescription());
+			stm.setString(3,obj.getStartDate());
+			stm.setString(4,obj.getEndDate());
+			stm.setString(5,obj.getPosition());
+			stm.setInt(6,obj.getArea().getId());
 			resultado = stm.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,8 +96,8 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 			stm.setString(3,obj.getStartDate());
 			stm.setString(4,obj.getEndDate());
 			stm.setString(5,obj.getPosition());
-			stm.setInt(6,obj.getArea());
-			stm.setString(7,obj.getId());
+			stm.setInt(6,obj.getArea().getId());
+			stm.setInt(7,obj.getId());
 			resultado = stm.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -155,7 +154,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 			stm.setInt(1, id);
 			rs = stm.executeQuery();
 			while (rs.next()) {
-				obj.setId(rs.getString("id"));
+				obj.setId(rs.getInt("id"));
 				obj.setName(rs.getString("name"));
 				obj.setDescription(rs.getString("Description"));
 				obj.setStartDate(rs.getString("startDate"));

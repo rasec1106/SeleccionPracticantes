@@ -143,6 +143,7 @@ public class GestorCandidato implements IGestorCandidato {
 			while (rs.next()) {
 				obj.setDni(rs.getString("dni"));
 				obj.setName(rs.getString("name"));
+				obj.setSurname(rs.getString("surname"));
 				obj.setEmail(rs.getString("email"));
 				obj.setBirthDate(rs.getString("birthDate"));
 				obj.setCurriculum(rs.getString("curriculum"));
