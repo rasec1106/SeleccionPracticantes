@@ -6,7 +6,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -14,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import gestores.GestorCandidato;
 import model.Candidato;
-import model.Convocatoria;
+import util.FileUtils;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -27,6 +26,9 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JFileChooser;
+import java.io.File;
+
 public class FrmCandidatos extends JInternalFrame {
 	/**
 	 * 
@@ -38,8 +40,10 @@ public class FrmCandidatos extends JInternalFrame {
 	private JTable tblLista;
 	private JTextField txtEmail;
 	
+	private File selectedFile = null;
 	private GestorCandidato gestor = new GestorCandidato();
 	private JDateChooser dateNacimiento;
+	private JLabel lblCV;
 
 	/**
 	 * Launch the application.
@@ -86,7 +90,7 @@ public class FrmCandidatos extends JInternalFrame {
 		lblNewLabel_1_3.setBounds(24, 232, 142, 14);
 		getContentPane().add(lblNewLabel_1_3);
 		
-		JLabel lblNewLabel_1_4 = new JLabel("Convocatoria");
+		JLabel lblNewLabel_1_4 = new JLabel("Curriculum");
 		lblNewLabel_1_4.setBounds(22, 286, 142, 14);
 		getContentPane().add(lblNewLabel_1_4);
 		
@@ -104,10 +108,6 @@ public class FrmCandidatos extends JInternalFrame {
 		txtApellido.setColumns(10);
 		txtApellido.setBounds(233, 152, 143, 20);
 		getContentPane().add(txtApellido);
-		
-		JComboBox<Convocatoria> cboConvocatoria = new JComboBox<Convocatoria>();
-		cboConvocatoria.setBounds(233, 282, 143, 22);
-		getContentPane().add(cboConvocatoria);
 		
 		JButton btnRegistrar = new JButton("Registrar");
 		btnRegistrar.addActionListener(new ActionListener() {
@@ -174,6 +174,20 @@ public class FrmCandidatos extends JInternalFrame {
 		dateNacimiento.setBounds(233, 232, 143, 20);
 		getContentPane().add(dateNacimiento);
 		
+		JButton btnCurriculum = new JButton("Adjuntar CV");
+		btnCurriculum.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCurriculumActionPerformed(e);
+			}
+		});
+		btnCurriculum.setBounds(233, 282, 143, 23);
+		getContentPane().add(btnCurriculum);
+		
+		lblCV = new JLabel("No existe archivo asociado a este candidato");
+		lblCV.setEnabled(false);
+		lblCV.setBounds(233, 316, 280, 14);
+		getContentPane().add(lblCV);
+		
 		CargarLista();
 
 	}
@@ -190,6 +204,9 @@ public class FrmCandidatos extends JInternalFrame {
 		Candidato obj = getDataFromForm();		
 		int resultado = gestor.registrar(obj);		
 		if (resultado == 1) {
+			if(selectedFile != null) {
+				copyFile(selectedFile);
+			}
 			JOptionPane.showMessageDialog(this, "Se registro el candidato");
 			CargarLista();
 			limpiarFormulario();
@@ -212,6 +229,7 @@ public class FrmCandidatos extends JInternalFrame {
 		obj.setSurname(txtApellido.getText());
 		obj.setEmail(txtEmail.getText());
 		obj.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").format(dateNacimiento.getDate()));
+		obj.setCurriculum(selectedFile.getName());
 		return obj;
 	}
 	protected void btnEditarActionPerformed(ActionEvent e) {
@@ -240,7 +258,8 @@ protected void tblListaMouseClicked(MouseEvent e) {
 			txtNombre.setText(obj.getName());
 			txtApellido.setText(obj.getSurname());
 			txtEmail.setText(obj.getEmail());
-			dateNacimiento.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getBirthDate()));		
+			dateNacimiento.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getBirthDate()));
+			lblCV.setText(obj.getCurriculum());
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -262,5 +281,25 @@ protected void tblListaMouseClicked(MouseEvent e) {
 				}
 			}
 		}
+	}
+	protected void btnCurriculumActionPerformed(ActionEvent e) {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(this);
+		if(result == JFileChooser.APPROVE_OPTION) {
+			selectedFile = fileChooser.getSelectedFile();
+		}
+		lblCV.setText(selectedFile.getName());
+	}
+	
+	private int copyFile(File file) {
+		int result = 1;
+		try {
+			FileUtils.copyFile(file.getAbsolutePath(), file.getName());
+		}catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Hubo un error al subir el curriculum");
+			result = -1;
+		}
+		return result;
 	}
 }
