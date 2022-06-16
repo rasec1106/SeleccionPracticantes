@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -17,6 +18,10 @@ import javax.swing.table.DefaultTableModel;
 
 import gestores.GestorCandidato;
 import model.Candidato;
+import util.FileUtils;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FrmListadoPracticantes extends JInternalFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -26,6 +31,9 @@ public class FrmListadoPracticantes extends JInternalFrame implements ActionList
 	private JScrollPane scrollPane;
 	private JTable tblPracticantes;
 	private JButton btnBuscar;
+	private JButton btnNewButton;
+	
+	private String selectedCV = "";
 
 	/**
 	 * Launch the application.
@@ -51,7 +59,7 @@ public class FrmListadoPracticantes extends JInternalFrame implements ActionList
 		setIconifiable(true);
 		setClosable(true);
 		setTitle("Lista de Practicantes");
-		setBounds(100, 100, 493, 300);
+		setBounds(100, 100, 493, 345);
 		getContentPane().setLayout(null);
 		
 		lblBuscar = new JLabel("Buscar por:");
@@ -73,6 +81,12 @@ public class FrmListadoPracticantes extends JInternalFrame implements ActionList
 		getContentPane().add(scrollPane);
 		
 		tblPracticantes = new JTable();
+		tblPracticantes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tblPracticantesMouseClicked(e);
+			}
+		});
 		tblPracticantes.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -90,6 +104,15 @@ public class FrmListadoPracticantes extends JInternalFrame implements ActionList
 		});
 		btnBuscar.setBounds(384, 7, 89, 23);
 		getContentPane().add(btnBuscar);
+		
+		btnNewButton = new JButton("Ver CV");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnNewButtonActionPerformed(e);
+			}
+		});
+		btnNewButton.setBounds(378, 271, 89, 23);
+		getContentPane().add(btnNewButton);
 
 	}
 
@@ -126,5 +149,15 @@ public class FrmListadoPracticantes extends JInternalFrame implements ActionList
 		 	break;
 		}
 		listarPracticantes(lista);
+	}
+	protected void btnNewButtonActionPerformed(ActionEvent e) {
+		try {
+			FileUtils.openFile(selectedCV);
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(this, e1.getMessage());
+		}
+	}
+	protected void tblPracticantesMouseClicked(MouseEvent e) {
+		selectedCV = (String) tblPracticantes.getValueAt(tblPracticantes.getSelectedRow(), 3);
 	}
 }

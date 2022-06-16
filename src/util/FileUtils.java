@@ -6,15 +6,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.swing.JOptionPane;
+
 public class FileUtils {
 	
-	public static void openFile(String path) {
+	public static void openFile(String path) throws Exception{
 		try {
-			if((new File(path)).exists()) {
-				Process p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+path);
+			if((new File(".\\filesDirectory\\"+path)).exists()) {
+				Process p = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+".\\filesDirectory\\"+path);
 				p.waitFor();
 			}else{
 				System.err.println("File does not exist");
+				throw new Exception("No existe dicho archivo");
 			}
 			System.out.println("Done");
 		} catch (Exception e) {

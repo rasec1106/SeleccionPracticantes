@@ -221,6 +221,7 @@ public class FrmCandidatos extends JInternalFrame {
 		txtApellido.setText("");
 		txtEmail.setText("");
 		dateNacimiento.setDate(new Date());
+		lblCV.setText("No existe archivo asociado a este candidato");
 	}
 	private Candidato getDataFromForm() {
 		Candidato obj = new Candidato();
@@ -229,7 +230,7 @@ public class FrmCandidatos extends JInternalFrame {
 		obj.setSurname(txtApellido.getText());
 		obj.setEmail(txtEmail.getText());
 		obj.setBirthDate(new SimpleDateFormat("yyyy-MM-dd").format(dateNacimiento.getDate()));
-		obj.setCurriculum(selectedFile.getName());
+		obj.setCurriculum(lblCV.getText());
 		return obj;
 	}
 	protected void btnEditarActionPerformed(ActionEvent e) {
@@ -237,6 +238,9 @@ public class FrmCandidatos extends JInternalFrame {
 			Candidato obj = getDataFromForm();			
 			int resultado = gestor.actualizar(obj);			
 			if (resultado == 1) {
+				if(selectedFile != null) {
+					copyFile(selectedFile);
+				}
 				JOptionPane.showMessageDialog(this, "Se actualizo el candidato");
 				CargarLista();
 				limpiarFormulario();
@@ -260,7 +264,7 @@ protected void tblListaMouseClicked(MouseEvent e) {
 			txtEmail.setText(obj.getEmail());
 			dateNacimiento.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(obj.getBirthDate()));
 			lblCV.setText(obj.getCurriculum());
-			
+			selectedFile = null;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
