@@ -160,4 +160,75 @@ public class GestorCandidato implements IGestorCandidato {
 		}		
 		return obj;
 	}
+
+	@Override
+	public ArrayList<Candidato> buscarXNombreOApellido(String filtro) {
+		ArrayList<Candidato> lista = new ArrayList<Candidato>();
+		ResultSet rs = null;
+		Connection cn = null;
+		PreparedStatement stm = null;
+		try {
+		 	cn = MySQLConnection.getConnection();
+		 	String sql = "SELECT * FROM tb_Candidate WHERE name LIKE ? OR surname LIKE ?";
+		 	stm = cn.prepareStatement(sql);
+		 	stm.setString(1, "%" + filtro + "%");
+		 	stm.setString(2, "%" + filtro + "%");
+		 	rs = stm.executeQuery();
+		 	while (rs.next()) {
+		 		Candidato obj = new Candidato();
+		 		obj.setDni(rs.getString("dni"));
+		 		obj.setName(rs.getString("name"));
+		 		obj.setSurname(rs.getString("surname"));
+		 		obj.setEmail(rs.getString("email"));
+		 		obj.setBirthDate(rs.getString("birthDate"));
+		 		obj.setCurriculum(rs.getString("curriculum"));
+		 		lista.add(obj);
+		 	}
+		} catch (Exception e) {
+		 	System.out.println("Error en BD: " + e.getMessage());
+		}finally {
+		 	try {
+		 		if(stm != null) stm.close();
+		 		if(cn != null) cn.close();
+		 	} catch (Exception e2) {
+		 		System.out.println("Error en Finally; " + e2.getMessage());
+		 	}
+		}
+		return lista;
+	}
+
+	@Override
+	public ArrayList<Candidato> buscarXDNI(String filtro) {
+		ArrayList<Candidato> lista = new ArrayList<Candidato>();
+		ResultSet rs = null;
+		Connection cn = null;
+		PreparedStatement stm = null;
+		try {
+		 	cn = MySQLConnection.getConnection();
+		 	String sql = "SELECT * FROM tb_Candidate WHERE dni LIKE ?";
+		 	stm = cn.prepareStatement(sql);
+		 	stm.setString(1, "%" + filtro + "%");
+		 	rs = stm.executeQuery();
+		 	while (rs.next()) {
+		 		Candidato obj = new Candidato();
+		 		obj.setDni(rs.getString("dni"));
+		 		obj.setName(rs.getString("name"));
+		 		obj.setSurname(rs.getString("surname"));
+		 		obj.setEmail(rs.getString("email"));
+		 		obj.setBirthDate(rs.getString("birthDate"));
+		 		obj.setCurriculum(rs.getString("curriculum"));
+		 		lista.add(obj);
+		 	}
+		} catch (Exception e) {
+		 	System.out.println("Error en BD: " + e.getMessage());
+		}finally {
+		 	try {
+		 		if(stm != null) stm.close();
+		 		if(cn != null) cn.close();
+		 	} catch (Exception e2) {
+		 		System.out.println("Error en Finally; " + e2.getMessage());
+		 	}
+		}
+		return lista;
+	}
 }

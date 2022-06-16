@@ -11,5 +11,7 @@ public interface IGestorCandidato {
 	public int actualizar (Candidato obj);	
 	public int eliminar (String dni);	
 	public Candidato obtener(String dni);
+	public ArrayList<Candidato> buscarXNombreOApellido(String filtro);	
+	public ArrayList<Candidato> buscarXDNI(String filtro);
 	
 }

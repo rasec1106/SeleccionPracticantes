@@ -1,26 +1,31 @@
 package vista;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JFrame;
 
-public class FrmListadoPracticantes extends JInternalFrame {
+import gestores.GestorCandidato;
+import model.Candidato;
+
+public class FrmListadoPracticantes extends JInternalFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JLabel lblBuscar;
 	private JComboBox<String> cboCategoria;
 	private JTextField txtFiltro;
-	private JButton btnBuscar;
 	private JScrollPane scrollPane;
 	private JTable tblPracticantes;
+	private JButton btnBuscar;
 
 	/**
 	 * Launch the application.
@@ -54,7 +59,7 @@ public class FrmListadoPracticantes extends JInternalFrame {
 		getContentPane().add(lblBuscar);
 		
 		cboCategoria = new JComboBox<String>();
-		cboCategoria.setModel(new DefaultComboBoxModel<String>(new String[] {"Mostrar todos", "Nombre o Apellido", "Usuario"}));
+		cboCategoria.setModel(new DefaultComboBoxModel(new String[] {"Mostrar todos", "Nombre o Apellido", "DNI"}));
 		cboCategoria.setBounds(91, 7, 114, 22);
 		getContentPane().add(cboCategoria);
 		
@@ -62,10 +67,6 @@ public class FrmListadoPracticantes extends JInternalFrame {
 		txtFiltro.setBounds(215, 8, 159, 20);
 		getContentPane().add(txtFiltro);
 		txtFiltro.setColumns(10);
-		
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.setBounds(384, 7, 89, 23);
-		getContentPane().add(btnBuscar);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 45, 463, 215);
@@ -80,6 +81,50 @@ public class FrmListadoPracticantes extends JInternalFrame {
 			}
 		));
 		scrollPane.setViewportView(tblPracticantes);
+		
+		btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnBuscarActionPerformed(e);
+			}
+		});
+		btnBuscar.setBounds(384, 7, 89, 23);
+		getContentPane().add(btnBuscar);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void listarPracticantes(ArrayList<Candidato> lista) {
+	 	DefaultTableModel modelo = (DefaultTableModel) tblPracticantes.getModel();
+	 	modelo.getDataVector().clear();
+		
+	 	for(Candidato obj : lista) {
+	 		Object[] data = {obj.getName(), obj.getSurname(), obj.getEmail(), obj.getCurriculum()};
+	 		modelo.addRow(data);
+	 	}
+	}
+
+	protected void btnBuscarActionPerformed(ActionEvent e) {
+		ArrayList<Candidato> lista = new ArrayList<Candidato>();
+		GestorCandidato gestor = new GestorCandidato();
+		
+		switch (cboCategoria.getSelectedIndex()) {
+		case 0:
+		 	lista = gestor.listar();
+		 	break;
+		case 1:
+		 	lista = gestor.buscarXNombreOApellido(txtFiltro.getText());
+		 	break;
+		case 2:
+		 	lista = gestor.buscarXDNI(txtFiltro.getText());
+		default:
+		 	break;
+		}
+		listarPracticantes(lista);
 	}
 }
