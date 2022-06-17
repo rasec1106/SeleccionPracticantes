@@ -67,7 +67,7 @@ public class FrmListadoPracticantes extends JInternalFrame implements ActionList
 		getContentPane().add(lblBuscar);
 		
 		cboCategoria = new JComboBox<String>();
-		cboCategoria.setModel(new DefaultComboBoxModel(new String[] {"Mostrar todos", "Nombre o Apellido", "DNI"}));
+		cboCategoria.setModel(new DefaultComboBoxModel<String>(new String[] {"Mostrar todos", "Nombre o Apellido", "DNI"}));
 		cboCategoria.setBounds(91, 7, 114, 22);
 		getContentPane().add(cboCategoria);
 		
