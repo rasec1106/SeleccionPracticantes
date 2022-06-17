@@ -6,9 +6,6 @@ import javax.swing.JInternalFrame;
 
 public class FrmPruebas extends JInternalFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
