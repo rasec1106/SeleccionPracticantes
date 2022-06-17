@@ -2,9 +2,13 @@ package vista;
 
 import java.awt.EventQueue;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
@@ -16,8 +20,9 @@ import model.Prueba;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FrmPrueba extends JInternalFrame {
 	
@@ -28,6 +33,7 @@ public class FrmPrueba extends JInternalFrame {
 	private GestorPrueba gestor = new GestorPrueba();
 
 	private Prueba pruebaInformatica = gestor.obtener(1);
+	private ArrayList<JRadioButton> correctAnswers = new ArrayList<JRadioButton>();
 	/**
 	 * Launch the application.
 	 */
@@ -48,7 +54,10 @@ public class FrmPrueba extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmPrueba() {
-		setBounds(100, 100, 533, 484);
+		setMaximizable(true);
+		setIconifiable(true);
+		setClosable(true);
+		setBounds(100, 100, 479, 473);
 		getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Realizar Prueba de conocimientos");
@@ -57,44 +66,74 @@ public class FrmPrueba extends JInternalFrame {
 		getContentPane().add(lblNewLabel);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(10, 80, 490, 360);
+		scrollPane.setBounds(10, 80, 440, 317);
 		getContentPane().add(scrollPane);
 		
 		JPanel panel = new JPanel();
 		scrollPane.setViewportView(panel);
-		panel.setLayout(null);
 		
 		ArrayList<Pregunta> preguntas = pruebaInformatica.getQuestions(); 
+		panel.setLayout(new GridLayout(5*preguntas.size() + 1, 0));
+		
+		JButton btnFinalizar = new JButton("Finalizar");
+		btnFinalizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnFinalizarActionPerformed(e);
+			}
+		});
+		btnFinalizar.setBounds(356, 408, 89, 23);
+		getContentPane().add(btnFinalizar);
 		
 		for(int i=0; i< preguntas.size(); i++) {
 			Pregunta p = preguntas.get(i);
-			JLabel lblNewLabel_1 = new JLabel("Pregunta "+(i+1));
-			lblNewLabel_1.setBounds(10, 150*i+10, 80, 20);
-			panel.add(lblNewLabel_1);
 			
-			JLabel lblNewLabel_2 = new JLabel(p.getQuestion());
+			JLabel lblNewLabel_2 = new JLabel("Pregunta "+(i+1)+": "+p.getQuestion());
 			lblNewLabel_2.setVerticalAlignment(SwingConstants.TOP);
-			lblNewLabel_2.setBounds(100, 150*i+10, 400, 20);
+			lblNewLabel_2.setBounds(100, 10, 480, 20);
 			panel.add(lblNewLabel_2);
 			
 			JRadioButton rbA = new JRadioButton(p.getOptionA());
-			rbA.setBounds(50, 150*i+40, 109, 23);
+			rbA.setBounds(50, 0, 109, 23);
 			panel.add(rbA);
 			
 			JRadioButton rbB = new JRadioButton(p.getOptionB());
-			rbB.setBounds(50, 150*i+70, 109, 23);
+			rbB.setBounds(50, 0, 109, 23);
 			panel.add(rbB);
 			
 			JRadioButton rbC = new JRadioButton(p.getOptionC());
-			rbC.setBounds(50, 150*i+100, 109, 23);
+			rbC.setBounds(50, 0, 109, 23);
 			panel.add(rbC);
 			
 			JRadioButton rbD = new JRadioButton(p.getOptionD());
-			rbD.setBounds(50, 150*i+130, 109, 23);
+			rbD.setBounds(50, 0, 109, 23);
 			panel.add(rbD);
+			
+			// Juntamos los botones en un grupo para seleccionar solo 1
+			ButtonGroup bg = new ButtonGroup();
+			bg.add(rbA);
+			bg.add(rbB);
+			bg.add(rbC);
+			bg.add(rbD);
+			
+			// Ingresamos la respuesta correcta para validar posteriormente
+			switch (p.getAnswer()) {
+				case "0": correctAnswers.add(rbA); break;
+				case "1": correctAnswers.add(rbB); break;
+				case "2": correctAnswers.add(rbC); break;
+				case "3": correctAnswers.add(rbD); break;
+				default: correctAnswers.add(null);
+			}			
 		}
-		panel.setBounds(10, 80, 490, 150*preguntas.size());
-
+		
+		
+	}
+	
+	
+	protected void btnFinalizarActionPerformed(ActionEvent e) {
+		int puntaje = 0;
+		for (JRadioButton rb : correctAnswers) {
+			if(rb.isSelected()) puntaje++;
+		}
+		JOptionPane.showMessageDialog(this, "Su puntaje es de "+puntaje+" respuestas correctas");
 	}
 }
