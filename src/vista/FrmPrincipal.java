@@ -29,6 +29,7 @@ public class FrmPrincipal extends JFrame {
 	private FrmListadoPracticantes frmListadoPracticantes = new FrmListadoPracticantes();
 	private FrmListadoConvocatorias frmListadoConvocatorias = new FrmListadoConvocatorias();
 	private FrmListadoPruebas frmListadoPruebas = new FrmListadoPruebas();
+	private FrmPrueba frmPrueba = new FrmPrueba();
 	
 
 	/**
@@ -121,6 +122,17 @@ public class FrmPrincipal extends JFrame {
 			}
 		});
 		mnuNewMenu_2.add(mnuListPruebas);
+		
+		JMenu mnNewMenu = new JMenu("Pruebas");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mnuRendirPrueba = new JMenuItem("Rendir prueba");
+		mnuRendirPrueba.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mnuPruebaActionPerformed(e);
+			}
+		});
+		mnNewMenu.add(mnuRendirPrueba);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -140,12 +152,14 @@ public class FrmPrincipal extends JFrame {
 		escritorio.add(frmListadoPracticantes);
 		escritorio.add(frmListadoConvocatorias);
 		escritorio.add(frmListadoPruebas);
+		escritorio.add(frmPrueba);
 		frmCandidatos.setVisible(false);
 		frmConvocatorias.setVisible(false);
 		frmPruebas.setVisible(false);
 		frmListadoPracticantes.setVisible(false);
 		frmListadoConvocatorias.setVisible(false);
 		frmListadoPruebas.setVisible(false);
+		frmPrueba.setVisible(false);
 		
 	}
 
@@ -169,5 +183,8 @@ public class FrmPrincipal extends JFrame {
 	}
 	protected void actionPerformedMnuListPruebas(ActionEvent e) {
 		frmListadoPruebas.setVisible(true);
+	}
+	protected void mnuPruebaActionPerformed(ActionEvent e) {
+		frmPrueba.setVisible(true);
 	}
 }

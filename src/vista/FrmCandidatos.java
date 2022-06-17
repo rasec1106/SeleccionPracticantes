@@ -28,6 +28,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFileChooser;
 import java.io.File;
+import javax.swing.JFrame;
 
 public class FrmCandidatos extends JInternalFrame {
 	/**
@@ -65,6 +66,10 @@ public class FrmCandidatos extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmCandidatos() {
+		setClosable(true);
+		setMaximizable(true);
+		setIconifiable(true);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setTitle("PRACTICANTES");
 		setBounds(100, 100, 555, 562);
 		getContentPane().setLayout(null);
@@ -151,7 +156,7 @@ public class FrmCandidatos extends JInternalFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nombres", "Apellidos", "Edad", "Convocatoria"
+				"ID", "Nombres", "Apellidos", "F. Nacimiento", "Curriculum"
 			}
 		));
 		tblLista.getColumnModel().getColumn(0).setPreferredWidth(65);

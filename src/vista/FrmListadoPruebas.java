@@ -7,6 +7,11 @@ import javax.swing.JInternalFrame;
 public class FrmListadoPruebas extends JInternalFrame {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
