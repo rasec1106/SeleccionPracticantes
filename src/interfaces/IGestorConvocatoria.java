@@ -11,5 +11,8 @@ public interface IGestorConvocatoria {
 	public int actualizar (Convocatoria obj);	
 	public int eliminar (int codigo);	
 	public Convocatoria obtener(int id);
+	public ArrayList<Convocatoria> buscarxNombre (String filtro);
+	public ArrayList<Convocatoria> buscarxArea (String filtro);
+	public ArrayList<Convocatoria> buscarxDia (String filtro);
 	
 }

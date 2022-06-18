@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <setup:Workspace
     xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:setup="http://www.eclipse.org/oomph/setup/1.0"
     name="workspace"/>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<setup:Workspace
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:setup="http://www.eclipse.org/oomph/setup/1.0"
+    name="workspace"/>
+>>>>>>> d698a4d487e2ba945d8a4f029b3a30448fa846e4
