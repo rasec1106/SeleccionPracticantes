@@ -220,7 +220,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 		PreparedStatement stm = null;
 		try {
 			cn = MySQLConnection.getConnection();
-			String sql = "SELECT * FROM tb_Proposal WHERE name LIKE ?";
+			String sql = "SELECT * FROM tb_Proposal p JOIN tb_Area a ON a.id = p.idArea WHERE a.name LIKE ?";
 			stm = cn.prepareStatement(sql);
 			stm.setString(1, "%" + filtro + "%");
 			rs = stm.executeQuery();
