@@ -13,6 +13,6 @@ public interface IGestorConvocatoria {
 	public Convocatoria obtener(int id);
 	public ArrayList<Convocatoria> buscarxNombre (String filtro);
 	public ArrayList<Convocatoria> buscarxArea (String filtro);
-	public ArrayList<Convocatoria> buscarxDia (String filtro);
+	public ArrayList<Convocatoria> buscarxDia (String inicio, String fin);
 	
 }
