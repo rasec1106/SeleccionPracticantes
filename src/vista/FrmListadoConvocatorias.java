@@ -28,7 +28,7 @@ import com.toedter.calendar.JDateChooser;
 public class FrmListadoConvocatorias extends JInternalFrame {
 	private JTextField txtFiltro;
 	private JTable tblLista;
-	private JComboBox cboBusqueda;
+	private JComboBox<String> cboBusqueda;
 	
 	
 
@@ -67,13 +67,13 @@ public class FrmListadoConvocatorias extends JInternalFrame {
 		lblNewLabel.setBounds(10, 11, 74, 14);
 		getContentPane().add(lblNewLabel);
 		
-		cboBusqueda = new JComboBox();
+		cboBusqueda = new JComboBox<String>();
 		cboBusqueda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				actionPerformedCboBusqueda(e);
 			}
 		});
-		cboBusqueda.setModel(new DefaultComboBoxModel(new String[] {"Mostrar todos", "Nombre", "Dia ", "Area"}));
+		cboBusqueda.setModel(new DefaultComboBoxModel<String>(new String[] {"Mostrar todos", "Nombre", "Dia ", "Area"}));
 		cboBusqueda.setBounds(82, 7, 142, 22);
 		getContentPane().add(cboBusqueda);
 		

@@ -178,7 +178,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 
 	@Override
 	public ArrayList<Convocatoria> buscarxNombre(String filtro) {
-		ArrayList<Convocatoria> lista = new ArrayList();
+		ArrayList<Convocatoria> lista = new ArrayList<Convocatoria>();
 		ResultSet rs = null;
 		Connection cn = null;
 		PreparedStatement stm = null;
@@ -214,7 +214,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 
 	@Override
 	public ArrayList<Convocatoria> buscarxArea(String filtro) {
-		ArrayList<Convocatoria> lista = new ArrayList();
+		ArrayList<Convocatoria> lista = new ArrayList<Convocatoria>();
 		ResultSet rs = null;
 		Connection cn = null;
 		PreparedStatement stm = null;
@@ -250,7 +250,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 
 	@Override
 	public ArrayList<Convocatoria> buscarxDia(String inicio, String fin) {
-		ArrayList<Convocatoria> lista = new ArrayList();
+		ArrayList<Convocatoria> lista = new ArrayList<Convocatoria>();
 		ResultSet rs = null;
 		Connection cn = null;
 		PreparedStatement stm = null;

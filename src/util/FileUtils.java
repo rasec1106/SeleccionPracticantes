@@ -6,8 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.swing.JOptionPane;
-
 public class FileUtils {
 	
 	public static void openFile(String path) throws Exception{

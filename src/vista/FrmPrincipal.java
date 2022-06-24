@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
@@ -23,12 +24,11 @@ public class FrmPrincipal extends JFrame {
 	private JDesktopPane escritorio;
 	
 	// Definir nuestros JInternalFrames
-	private FrmCandidatos frmCandidatos = new FrmCandidatos();
+	private FrmCandidatos frmCandidatos;
 	private FrmConvocatorias frmConvocatorias = new FrmConvocatorias();
-	private FrmPruebas frmPruebas = new FrmPruebas();
+	private FrmListadoPruebas frmListadoPruebas = new FrmListadoPruebas();
 	private FrmListadoPracticantes frmListadoPracticantes = new FrmListadoPracticantes();
 	private FrmListadoConvocatorias frmListadoConvocatorias = new FrmListadoConvocatorias();
-	private FrmListadoPruebas frmListadoPruebas = new FrmListadoPruebas();
 	private FrmPrueba frmPrueba = new FrmPrueba();
 	
 
@@ -146,19 +146,14 @@ public class FrmPrincipal extends JFrame {
 	}
 
 	private void inicializarVentanas() {
-		escritorio.add(frmCandidatos);
 		escritorio.add(frmConvocatorias);
-		escritorio.add(frmPruebas);
 		escritorio.add(frmListadoPracticantes);
 		escritorio.add(frmListadoConvocatorias);
-		escritorio.add(frmListadoPruebas);
+
 		escritorio.add(frmPrueba);
-		frmCandidatos.setVisible(false);
 		frmConvocatorias.setVisible(false);
-		frmPruebas.setVisible(false);
 		frmListadoPracticantes.setVisible(false);
 		frmListadoConvocatorias.setVisible(false);
-		frmListadoPruebas.setVisible(false);
 		frmPrueba.setVisible(false);
 		
 	}
@@ -167,13 +162,15 @@ public class FrmPrincipal extends JFrame {
 		System.exit(DISPOSE_ON_CLOSE);
 	}
 	protected void actionPerformedMnuPracticantes(ActionEvent e) {
-		frmCandidatos.setVisible(true);
+		frmCandidatos = new FrmCandidatos();
+		addInternalFrame(frmCandidatos);
 	}
 	protected void actionPerformedMnuConvocatorias(ActionEvent e) {
 		frmConvocatorias.setVisible(true);
 	}
 	protected void actionPerformedMnuPruebas(ActionEvent e) {
-		frmPruebas.setVisible(true);
+		FrmPruebas frmPruebas = new FrmPruebas(this);
+		addInternalFrame(frmPruebas);
 	}
 	protected void actionPerformedMnuListPracticantes(ActionEvent e) {
 		frmListadoPracticantes.setVisible(true);
@@ -182,9 +179,15 @@ public class FrmPrincipal extends JFrame {
 		frmListadoConvocatorias.setVisible(true);
 	}
 	protected void actionPerformedMnuListPruebas(ActionEvent e) {
-		frmListadoPruebas.setVisible(true);
+		frmListadoPruebas = new FrmListadoPruebas();
+		addInternalFrame(frmListadoPruebas);
 	}
 	protected void mnuPruebaActionPerformed(ActionEvent e) {
 		frmPrueba.setVisible(true);
+	}
+	
+	public void addInternalFrame(JInternalFrame frame) {
+		escritorio.add(frame);
+		frame.setVisible(true);
 	}
 }

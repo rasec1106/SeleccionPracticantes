@@ -1,9 +1,5 @@
 package util;
 
-import java.util.ArrayList;
-
-import gestores.GestorUsuario;
-import model.Usuario;
 
 public class testing {
 
