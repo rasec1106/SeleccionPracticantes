@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class MySQLConnection {
 
+	@SuppressWarnings("deprecation")
 	public static Connection getConnection() {
 		Connection cn = null;
 		

@@ -178,7 +178,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 
 	@Override
 	public ArrayList<Convocatoria> buscarxNombre(String filtro) {
-		ArrayList<Convocatoria> lista = new ArrayList();
+		ArrayList<Convocatoria> lista = new ArrayList<Convocatoria>();
 		ResultSet rs = null;
 		Connection cn = null;
 		PreparedStatement stm = null;
@@ -214,7 +214,7 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 
 	@Override
 	public ArrayList<Convocatoria> buscarxArea(String filtro) {
-		ArrayList<Convocatoria> lista = new ArrayList();
+		ArrayList<Convocatoria> lista = new ArrayList<Convocatoria>();
 		ResultSet rs = null;
 		Connection cn = null;
 		PreparedStatement stm = null;
@@ -249,17 +249,17 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 	}
 
 	@Override
-	public ArrayList<Convocatoria> buscarxDia(String filtro) {
-		ArrayList<Convocatoria> lista = new ArrayList();
+	public ArrayList<Convocatoria> buscarxDia(String inicio, String fin) {
+		ArrayList<Convocatoria> lista = new ArrayList<Convocatoria>();
 		ResultSet rs = null;
 		Connection cn = null;
 		PreparedStatement stm = null;
 		try {
 			cn = MySQLConnection.getConnection();
-			String sql = "SELECT * FROM tb_Proposal WHERE startDate LIKE ? OR endDate LIKE ?";
+			String sql = "SELECT * FROM tb_Proposal WHERE startDate  <= ? AND endDate  >= ?";
 			stm = cn.prepareStatement(sql);
-			stm.setString(1, "%" + filtro + "%");
-			stm.setString(2, "%" + filtro + "%");
+			stm.setString(1, inicio );
+			stm.setString(2,  fin );
 			rs = stm.executeQuery();
 			while (rs.next()) {
 				Convocatoria obj = new Convocatoria();
