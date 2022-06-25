@@ -49,4 +49,33 @@ public class GestorUsuario implements IGestorUsuario {
 		return null;
 	}
 
+	@Override
+	public boolean validarAcceso(Usuario obj) {
+		boolean esValido = false;
+		ResultSet rs = null;
+		Connection cn = null;
+		PreparedStatement stm = null;
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "{CALL usp_ValidarUsuario(?, ?)}";
+			stm = cn.prepareStatement(sql);
+			stm.setString(1, obj.getUsername());;
+			stm.setString(2, obj.getPassword());
+			rs = stm.executeQuery();
+			while (rs.next()) {
+				esValido = true;
+			}
+		} catch (Exception e) {
+			System.out.println("Error en BD: " + e.getMessage());
+		}finally {
+			try {
+				if(stm != null) stm.close();
+				if(cn != null) cn.close();
+			} catch (Exception e2) {
+				System.out.println("Error en Finally; " + e2.getMessage());
+			}
+		}
+		return esValido;
+	}
+
 }
