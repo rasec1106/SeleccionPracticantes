@@ -34,5 +34,7 @@ public class Prueba {
 	public void setQuestions(ArrayList<Pregunta> questions) {
 		this.questions = questions;
 	}
+	
+
 
 }
