@@ -6,7 +6,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
@@ -15,10 +14,8 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import gestores.GestorArea;
 import gestores.GestorConvocatoria;
 import gestores.GestorPrueba;
-import model.Area;
 import model.Convocatoria;
 import model.Prueba;
 
@@ -119,7 +116,8 @@ public class FrmPruebas extends JInternalFrame {
 	}
 
 	protected void btnNuevoActionPerformed(ActionEvent e) {
-		FrmPreguntas frame = new FrmPreguntas();
+		Convocatoria convocatoria = (Convocatoria)cboConvocatoria.getSelectedItem();
+		FrmPreguntas frame = new FrmPreguntas(convocatoria);
 		mainFrame.addInternalFrame(frame);
 	}
 	
@@ -133,9 +131,13 @@ public class FrmPruebas extends JInternalFrame {
 	protected void actionPerformedBtnNewButton(ActionEvent e) {
 		ArrayList<Prueba> lista = new ArrayList<Prueba>();
 		GestorPrueba gestor = new GestorPrueba();
-		lista = gestor.listarxConvocatoria(cboConvocatoria.getSelectedIndex());
-		
-
-	
+		Convocatoria c = (Convocatoria)cboConvocatoria.getSelectedItem();
+		lista = gestor.listarxConvocatoria(c.getId());
+		DefaultTableModel modelo = (DefaultTableModel) tblLista.getModel();
+		modelo.getDataVector().clear();		
+		for(Prueba obj : lista) {
+			Object[] data = {obj.getId(), obj.getName()};
+			modelo.addRow(data);
+		}
 	}
 }

@@ -51,7 +51,7 @@ public class GestorPrueba implements IGestorPrueba {
 		PreparedStatement stm = null;
 		try {
 			cn = MySQLConnection.getConnection();
-			String sql = "SELECT * FROM tb_Test t JOIN tb_Proposal p ON t.idProposal = p.id WHERE p.name LIKE ?";
+			String sql = "SELECT * FROM tb_Test WHERE idProposal =  ?";
 			stm = cn.prepareStatement(sql);
 			stm.setInt(1, filtro);
 			rs = stm.executeQuery();
@@ -72,6 +72,58 @@ public class GestorPrueba implements IGestorPrueba {
 			}
 		}
 		return lista;
+	}
+	@Override
+	public int registrar(Prueba prueba, Convocatoria convocatoria) {
+		int resultado = -1;
+		Connection cn = null;
+		PreparedStatement stm = null;		
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "INSERT INTO tb_Test(name, idProposal) VALUES (?,?)";
+			stm = cn.prepareStatement(sql);
+			stm.setString(1,prueba.getName());
+			stm.setInt(2,convocatoria.getId());
+			resultado = stm.executeUpdate();
+			resultado = registrarPreguntas(prueba);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return resultado;
+	}
+	
+	private int registrarPreguntas(Prueba prueba) {
+		int resultado = -1;
+		ResultSet rs = null;
+		Connection cn = null;
+		PreparedStatement stm = null;		
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "SELECT id FROM tb_Test ORDER BY id DESC LIMIT 1";
+			stm = cn.prepareStatement(sql);
+			rs = stm.executeQuery();
+			while (rs.next()) {				
+				int idTest = rs.getInt("id");
+				resultado = new GestorPregunta().registrarPreguntas(prueba.getQuestions(), idTest);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return resultado;
 	}
 
 
