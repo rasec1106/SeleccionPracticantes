@@ -153,9 +153,6 @@ public class FrmPrincipal extends JFrame {
 			}
 		});
 		m_Pruebas.add(mnuMisConvocatorias);
-		
-		JMenu mnNewMenu = new JMenu("Pruebas");
-		menuBar.add(mnNewMenu);
 
 		
 		JMenuItem mnuRendirPrueba = new JMenuItem("Rendir prueba");

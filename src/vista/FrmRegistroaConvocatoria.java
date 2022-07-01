@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 
 
@@ -154,13 +155,16 @@ public class FrmRegistroaConvocatoria extends JInternalFrame {
 			JOptionPane.showMessageDialog(this, "Debes seleccionar una convocatoria");
 			return;
 		}
-		
-		int resultado = gestor.registrarseaConvocatoria(candidato, convocatoriaSeleccionada);		
-		if (resultado == 1) {
-			JOptionPane.showMessageDialog(this, "Se registro el candidato");
-
-		} else {
-			JOptionPane.showMessageDialog(this, "No se pudo registrar el candidato");
+		try {			
+			int resultado = gestor.registrarseaConvocatoria(candidato, convocatoriaSeleccionada);		
+			if (resultado == 1) {
+				JOptionPane.showMessageDialog(this, "Se registro el candidato");
+	
+			} else {
+				JOptionPane.showMessageDialog(this, "No se pudo registrar el candidato");
+			}
+		}catch(SQLIntegrityConstraintViolationException ex) {
+			JOptionPane.showMessageDialog(this, "Ya se encuentra registrado a esta convocatoria");
 		}
 
 		

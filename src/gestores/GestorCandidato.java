@@ -3,6 +3,7 @@ package gestores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 import interfaces.IGestorCandidato;
@@ -234,7 +235,7 @@ public class GestorCandidato implements IGestorCandidato {
 	}
 
 	@Override
-	public int registrarseaConvocatoria(Candidato candidate, Convocatoria convocatoria) {
+	public int registrarseaConvocatoria(Candidato candidate, Convocatoria convocatoria) throws SQLIntegrityConstraintViolationException{
 		int resultado = -1;
 		Connection cn = null;
 		PreparedStatement stm = null;		
@@ -245,9 +246,13 @@ public class GestorCandidato implements IGestorCandidato {
 			stm.setString(1,candidate.getDni());
 			stm.setInt(2,convocatoria.getId());
 			resultado = stm.executeUpdate();
-		} catch (Exception e) {
+		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
-		} finally {
+			throw new SQLIntegrityConstraintViolationException();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		finally {
 			try {
 				if (stm != null) stm.close();
 				if (cn != null) cn.close();

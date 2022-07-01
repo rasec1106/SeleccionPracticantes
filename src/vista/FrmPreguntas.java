@@ -6,11 +6,13 @@ import java.awt.EventQueue;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
@@ -19,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import gestores.GestorPregunta;
 import gestores.GestorPrueba;
 import model.Candidato;
+import model.Convocatoria;
 import model.Pregunta;
 import model.Prueba;
 
@@ -30,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -44,17 +48,16 @@ public class FrmPreguntas extends JInternalFrame {
 	private JTextField txtD;
 	private JTable tblLista;
 	private GestorPrueba gestorPrueba = new GestorPrueba();
-	private GestorPregunta gestorPregunta = new GestorPregunta();
-	private Prueba prueba;
 	private ArrayList<Pregunta> preguntas;
-	
-	private JLabel lblTitle;
 	private JTextArea txtPregunta;
 	private JRadioButton rbA;
 	private JRadioButton rbB;
 	private JRadioButton rbC;
 	private JRadioButton rbD;
 	private ButtonGroup bg;
+	private JTextField txtNombre;
+	private JPanel panel;
+	private Convocatoria convocatoria;
 
 	/**
 	 * Launch the application.
@@ -70,6 +73,10 @@ public class FrmPreguntas extends JInternalFrame {
 				}
 			}
 		});
+	}
+	public FrmPreguntas(Convocatoria c) {
+		this();
+		convocatoria = c;
 	}
 
 	/**
@@ -114,7 +121,8 @@ public class FrmPreguntas extends JInternalFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(33, 393, 357, 178);
-		getContentPane().add(scrollPane);
+		getContentPane().add(scrollPane);	
+		
 		
 		tblLista = new JTable();
 		tblLista.addMouseListener(new MouseAdapter() {
@@ -138,6 +146,9 @@ public class FrmPreguntas extends JInternalFrame {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(423, 50, 478, 521);
 		getContentPane().add(scrollPane_1);
+		
+		panel = new JPanel();
+		scrollPane_1.setViewportView(panel);
 		
 		JLabel lblNewLabel_7 = new JLabel("VISTA PREVIA");
 		lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
@@ -173,14 +184,13 @@ public class FrmPreguntas extends JInternalFrame {
 		getContentPane().add(btnEliminar);
 		
 		JButton btnGuardar = new JButton("GUARDAR PRUEBA");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnGuardarActionPerformed(e);
+			}
+		});
 		btnGuardar.setBounds(125, 582, 189, 37);
 		getContentPane().add(btnGuardar);
-		
-		lblTitle = new JLabel("TITULO");
-		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setBounds(33, 16, 357, 28);
-		getContentPane().add(lblTitle);
 		
 		txtA = new JTextField();
 		txtA.setBounds(111, 117, 259, 20);
@@ -234,13 +244,23 @@ public class FrmPreguntas extends JInternalFrame {
 		txtPregunta.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),
 				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 		
+		JLabel lblNewLabel_8 = new JLabel("NOMBRE");
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_8.setBounds(34, 11, 80, 23);
+		getContentPane().add(lblNewLabel_8);
+		
+		txtNombre = new JTextField();
+		txtNombre.setBounds(111, 14, 259, 20);
+		getContentPane().add(txtNombre);
+		txtNombre.setColumns(10);
+		
 		this.obtenerDatos();
 	}
 	
 	private void obtenerDatos() {
-		prueba = gestorPrueba.obtener(1);
-		preguntas = gestorPregunta.listarPreguntasXConvocatoria(prueba.getId());
-		lblTitle.setText(prueba.getName());
+		//prueba = gestorPrueba.obtener(1);
+		//preguntas = gestorPregunta.listarPreguntasXConvocatoria(prueba.getId());
+		preguntas = new ArrayList<Pregunta>();
 		CargarLista();
 	}
 	private void CargarLista() {	
@@ -250,6 +270,43 @@ public class FrmPreguntas extends JInternalFrame {
 			Object[] data = {obj.getId(), obj.getQuestion()};
 			modelo.addRow(data);
 		}		
+		CargarPreview();
+	}
+	private void CargarPreview() {
+		panel.removeAll();
+		panel.setLayout(new GridLayout(5*preguntas.size() + 1, 0));
+		for(int i=0; i< preguntas.size(); i++) {
+			Pregunta p = preguntas.get(i);
+			
+			JLabel lblNewLabel_2 = new JLabel("Pregunta "+(i+1)+": "+p.getQuestion());
+			lblNewLabel_2.setVerticalAlignment(SwingConstants.TOP);
+			lblNewLabel_2.setBounds(100, 10, 480, 20);
+			panel.add(lblNewLabel_2);
+			
+			JRadioButton rbA = new JRadioButton(p.getOptionA());
+			rbA.setBounds(50, 0, 109, 23);
+			panel.add(rbA);
+			
+			JRadioButton rbB = new JRadioButton(p.getOptionB());
+			rbB.setBounds(50, 0, 109, 23);
+			panel.add(rbB);
+			
+			JRadioButton rbC = new JRadioButton(p.getOptionC());
+			rbC.setBounds(50, 0, 109, 23);
+			panel.add(rbC);
+			
+			JRadioButton rbD = new JRadioButton(p.getOptionD());
+			rbD.setBounds(50, 0, 109, 23);
+			panel.add(rbD);
+			
+			// Juntamos los botones en un grupo para seleccionar solo 1
+			ButtonGroup bg = new ButtonGroup();
+			bg.add(rbA);
+			bg.add(rbB);
+			bg.add(rbC);
+			bg.add(rbD);
+					
+		}
 	}
 	protected void btnAgregarActionPerformed(ActionEvent e) {
 		Pregunta obj = new Pregunta();
@@ -323,5 +380,24 @@ public class FrmPreguntas extends JInternalFrame {
 		int selectedRow = tblLista.getSelectedRow();
 		if(selectedRow == -1) JOptionPane.showMessageDialog(this, "Debe elegir una pregunta de la tabla");
 		preguntas.remove(selectedRow);
+		CargarLista();
+		LimpiarFormulario();
+	}
+	protected void btnGuardarActionPerformed(ActionEvent e) {
+		Prueba prueba = new Prueba();
+		prueba.setName(txtNombre.getText());
+		prueba.setQuestions(preguntas);
+		int resultado = gestorPrueba.registrar(prueba, convocatoria);
+		if (resultado == 1) {
+			JOptionPane.showMessageDialog(this, "Se creo la prueba correctamente");
+			try {
+				this.setClosed(true);
+			} catch (PropertyVetoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "No se pudo crear la prueba");
+		}
 	}
 }

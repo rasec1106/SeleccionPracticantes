@@ -23,6 +23,8 @@ import model.Convocatoria;
 import model.Usuario;
 
 import com.toedter.calendar.JDateChooser;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 
 
@@ -60,12 +62,12 @@ public class FrmMisConvocatorias_Candidato extends JInternalFrame {
 		setClosable(true);
 		setIconifiable(true);
 		setMaximizable(true);
-		setTitle("Listado de Convocatorias");
+		setTitle("Mis Convocatorias");
 		setBounds(100, 100, 692, 343);
 		getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 656, 284);
+		scrollPane.setBounds(10, 62, 656, 141);
 		getContentPane().add(scrollPane);
 		
 		tblLista = new JTable();
@@ -77,6 +79,12 @@ public class FrmMisConvocatorias_Candidato extends JInternalFrame {
 			}
 		));
 		scrollPane.setViewportView(tblLista);
+		
+		JLabel lblNewLabel = new JLabel("CONVOCATORIAS A LAS QUE ESTA INSCRITO");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(112, 11, 438, 38);
+		getContentPane().add(lblNewLabel);
 		
 		
 		

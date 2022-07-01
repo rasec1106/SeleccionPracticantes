@@ -47,4 +47,36 @@ public class GestorPregunta implements IGestorPregunta {
 		return lista;
 	}
 
+	@Override
+	public int registrarPreguntas(ArrayList<Pregunta> preguntas, int idTest) {
+		int resultado = -1;
+		Connection cn = null;
+		PreparedStatement stm = null;		
+		try {
+			cn = MySQLConnection.getConnection();
+			for(Pregunta p : preguntas) {				
+				String sql = "INSERT INTO tb_Question(question, optionA, optionB, optionC, optionD, answer, idTest) VALUES (?,?,?,?,?,?,?)";
+				stm = cn.prepareStatement(sql);
+				stm.setString(1,p.getQuestion());
+				stm.setString(2,p.getOptionA());
+				stm.setString(3,p.getOptionB());
+				stm.setString(4,p.getOptionC());
+				stm.setString(5,p.getOptionD());
+				stm.setString(6,p.getAnswer());
+				stm.setInt(7,idTest);
+				resultado = stm.executeUpdate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return resultado;
+	}
+
 }

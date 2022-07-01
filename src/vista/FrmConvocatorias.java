@@ -207,7 +207,11 @@ public class FrmConvocatorias extends JInternalFrame {
 	
 	private Convocatoria getDataFromForm() {
 		Convocatoria obj = new Convocatoria();
-		obj.setId(Integer.parseInt(txtID.getText()));
+		try {
+			obj.setId(Integer.parseInt(txtID.getText()));			
+		}catch (Exception e) {
+			obj.setId(0);
+		}
 		obj.setName(txtNombre.getText());
 		obj.setDescription(txtDescripcion.getText());
 		obj.setStartDate(new SimpleDateFormat("yyyy-MM-dd").format(dateInicio.getDate()));
