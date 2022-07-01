@@ -44,7 +44,7 @@ public class FrmPruebas extends JInternalFrame {
 		setBounds(100, 100, 450, 300);
 		
 		JButton btnNuevo = new JButton("Nueva Prueba");
-		btnNuevo.setBounds(301, 67, 89, 23);
+		btnNuevo.setBounds(321, 49, 89, 23);
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnNuevoActionPerformed(e);
@@ -54,7 +54,7 @@ public class FrmPruebas extends JInternalFrame {
 		getContentPane().add(btnNuevo);
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(69, 71, 46, 14);
+		lblNewLabel.setBounds(36, 53, 46, 14);
 		getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");

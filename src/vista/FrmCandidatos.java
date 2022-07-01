@@ -254,7 +254,7 @@ public class FrmCandidatos extends JInternalFrame {
 			}			
 		}
 	}
-protected void tblListaMouseClicked(MouseEvent e) {
+	protected void tblListaMouseClicked(MouseEvent e) {
 		
 		String dni = (String) tblLista.getValueAt(tblLista.getSelectedRow(), 0);
 		Candidato c = gestor.obtener(dni);

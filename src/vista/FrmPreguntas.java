@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -27,6 +28,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class FrmPreguntas extends JInternalFrame {
 	/**
@@ -112,6 +117,12 @@ public class FrmPreguntas extends JInternalFrame {
 		getContentPane().add(scrollPane);
 		
 		tblLista = new JTable();
+		tblLista.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tblListaMouseClicked(e);
+			}
+		});
 		tblLista.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -144,10 +155,20 @@ public class FrmPreguntas extends JInternalFrame {
 		getContentPane().add(btnAgregar);
 		
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnEditarActionPerformed(e);
+			}
+		});
 		btnEditar.setBounds(166, 332, 89, 23);
 		getContentPane().add(btnEditar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnEliminarActionPerformed(e);
+			}
+		});
 		btnEliminar.setBounds(280, 332, 89, 23);
 		getContentPane().add(btnEliminar);
 		
@@ -254,5 +275,53 @@ public class FrmPreguntas extends JInternalFrame {
 		txtC.setText("");
 		txtD.setText("");
 		bg.clearSelection();
+	}
+	protected void tblListaMouseClicked(MouseEvent e) {
+		int selectedRow = tblLista.getSelectedRow();
+		Pregunta p = preguntas.get(selectedRow);
+		setDataToForm(p);
+	}
+	private void setDataToForm(Pregunta obj) {
+		try {				
+			txtPregunta.setText(obj.getQuestion());
+			txtA.setText(obj.getOptionA());
+			txtB.setText(obj.getOptionB());
+			txtC.setText(obj.getOptionC());
+			txtD.setText(obj.getOptionD());
+			bg.clearSelection();
+			switch(obj.getAnswer()) {
+				case "0": rbA.setSelected(true);; break;
+				case "1": rbB.setSelected(true);; break;
+				case "2": rbC.setSelected(true);; break;
+				case "3": rbD.setSelected(true);; break;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	protected void btnEditarActionPerformed(ActionEvent e) {
+		int selectedRow = tblLista.getSelectedRow();
+		if(selectedRow == -1) {
+			JOptionPane.showMessageDialog(this, "Debe elegir una pregunta de la tabla");
+			return;
+		}
+		Pregunta obj = preguntas.get(selectedRow);
+		obj.setQuestion(txtPregunta.getText());
+		obj.setOptionA(txtA.getText());
+		obj.setOptionB(txtB.getText());
+		obj.setOptionC(txtC.getText());
+		obj.setOptionD(txtD.getText());
+		if(rbA.isSelected()) obj.setAnswer("0");
+		if(rbB.isSelected()) obj.setAnswer("1");
+		if(rbC.isSelected()) obj.setAnswer("2");
+		if(rbD.isSelected()) obj.setAnswer("3");
+		CargarLista();
+		LimpiarFormulario();
+	}
+	protected void btnEliminarActionPerformed(ActionEvent e) {
+		int selectedRow = tblLista.getSelectedRow();
+		if(selectedRow == -1) JOptionPane.showMessageDialog(this, "Debe elegir una pregunta de la tabla");
+		preguntas.remove(selectedRow);
 	}
 }
