@@ -95,7 +95,7 @@ public class FrmLogin extends JFrame {
 		Usuario user = new GestorUsuario().validarAcceso(txtUser.getText(), txtPassword.getText());
 		if(user == null) JOptionPane.showMessageDialog(this, "Credenciales invalidas");
 		else {
-			JFrame principal = new FrmPrincipal();
+			JFrame principal = new FrmPrincipal(user);
 			principal.setVisible(true);
 			this.setVisible(false);
 		}

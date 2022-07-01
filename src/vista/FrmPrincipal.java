@@ -8,6 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import model.Usuario;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -30,8 +33,8 @@ public class FrmPrincipal extends JFrame {
 	private FrmListadoPracticantes frmListadoPracticantes = new FrmListadoPracticantes();
 	private FrmListadoConvocatorias frmListadoConvocatorias = new FrmListadoConvocatorias();
 	private FrmPrueba frmPrueba = new FrmPrueba();
-	private FrmRegistroaConvocatoria frmRegistroaConvocatoria = new FrmRegistroaConvocatoria();
-	
+	private FrmRegistroaConvocatoria frmRegistroaConvocatoria;
+	private Usuario usuario;
 
 	/**
 	 * Launch the application.
@@ -52,6 +55,10 @@ public class FrmPrincipal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public FrmPrincipal(Usuario user) {
+		this();
+		usuario = user;
+	}
 	public FrmPrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 689, 616);
@@ -204,6 +211,7 @@ public class FrmPrincipal extends JFrame {
 		frame.setVisible(true);
 	}
 	protected void actionPerformedMntmNewMenuItem(ActionEvent e) {
+		frmRegistroaConvocatoria =  new FrmRegistroaConvocatoria(usuario);
 		frmRegistroaConvocatoria.setVisible(true);
 	}
 }
