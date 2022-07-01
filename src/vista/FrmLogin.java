@@ -59,7 +59,7 @@ public class FrmLogin extends JFrame {
 		contentPane.add(lblUsuario);
 		
 		JLabel lblContrasenia = new JLabel("Contrase\u00F1a:");
-		lblContrasenia.setBounds(38, 59, 70, 14);
+		lblContrasenia.setBounds(38, 59, 85, 14);
 		contentPane.add(lblContrasenia);
 		
 		txtPassword = new JPasswordField();
