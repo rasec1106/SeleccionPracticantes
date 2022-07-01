@@ -49,6 +49,7 @@ public class FrmListadoPruebas extends JInternalFrame implements ActionListener 
 	 * Create the frame.
 	 */
 	public FrmListadoPruebas() {
+		setClosable(true);
 		setTitle("Lista de Pruebas");
 		setBounds(100, 100, 493, 345);
 		getContentPane().setLayout(null);
