@@ -142,6 +142,14 @@ public class FrmPrincipal extends JFrame {
 		});
 		m_Reportes.add(mnuListPruebas);
 		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Listado de Resultados");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mntmNewMenuItem_1ActionPerformed(e);
+			}
+		});
+		m_Reportes.add(mntmNewMenuItem_1);
+		
 		m_Registro = new JMenu("Registro");
 		menuBar.add(m_Registro);
 		
@@ -241,5 +249,10 @@ public class FrmPrincipal extends JFrame {
 		escritorio.add(frm);
 		frm.setVisible(true);
 
+	}
+	protected void mntmNewMenuItem_1ActionPerformed(ActionEvent e) {
+		FrmListadoResultados frm = new FrmListadoResultados();
+		escritorio.add(frm);
+		frm.setVisible(true);
 	}
 }

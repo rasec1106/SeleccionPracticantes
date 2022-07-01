@@ -15,7 +15,6 @@ import gestores.GestorCandidato;
 import gestores.GestorConvocatoria;
 import model.Candidato;
 import model.Convocatoria;
-import model.Prueba;
 import model.Usuario;
 
 import javax.swing.JComboBox;
@@ -23,17 +22,19 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 
 
 public class FrmRegistroaConvocatoria extends JInternalFrame {
-	private JComboBox cboConvocatoria;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private JComboBox<Convocatoria> cboConvocatoria;
 	
 	private GestorConvocatoria gestorConvocatoria = new GestorConvocatoria();
 	private ArrayList<Convocatoria> listaConvocatorias = gestorConvocatoria.listar();
@@ -41,7 +42,6 @@ public class FrmRegistroaConvocatoria extends JInternalFrame {
 	
 	private Candidato candidato;
 	
-	private File selectedFile = null;
 	private GestorCandidato gestor = new GestorCandidato();
 	private Convocatoria convocatoriaSeleccionada = null;
 	
@@ -89,7 +89,7 @@ public class FrmRegistroaConvocatoria extends JInternalFrame {
 		));
 		scrollPane.setViewportView(tblLista);
 		
-		cboConvocatoria = new JComboBox();
+		cboConvocatoria = new JComboBox<Convocatoria>();
 		cboConvocatoria.setBounds(22, 45, 260, 22);
 		getContentPane().add(cboConvocatoria);
 		

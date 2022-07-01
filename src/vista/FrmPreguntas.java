@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import gestores.GestorPregunta;
+
 import gestores.GestorPrueba;
-import model.Candidato;
+
 import model.Convocatoria;
 import model.Pregunta;
 import model.Prueba;
@@ -34,8 +34,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 
 public class FrmPreguntas extends JInternalFrame {
 	/**
