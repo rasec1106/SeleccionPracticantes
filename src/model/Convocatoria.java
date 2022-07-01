@@ -88,5 +88,11 @@ public class Convocatoria {
 	public void setResults(Resultado[] results) {
 		this.results = results;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return id+" - "+name;
+	}
 
 }

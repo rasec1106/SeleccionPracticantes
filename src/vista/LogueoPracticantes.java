@@ -21,7 +21,7 @@ public class LogueoPracticantes extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblUsuario;
-	private JLabel lblContraseña;
+	private JLabel lblContrasenia;
 	private JButton btnIniciarSesion;
 	private JButton btnCrearCuenta;
 	private JTextField txtUsuario;
@@ -63,9 +63,9 @@ public class LogueoPracticantes extends JFrame implements ActionListener {
 		lblUsuario.setBounds(116, 41, 49, 14);
 		contentPane.add(lblUsuario);
 		
-		lblContraseña = new JLabel("Contrase\u00F1a:");
-		lblContraseña.setBounds(116, 87, 70, 14);
-		contentPane.add(lblContraseña);
+		lblContrasenia = new JLabel("Contrase\u00F1a:");
+		lblContrasenia.setBounds(116, 87, 70, 14);
+		contentPane.add(lblContrasenia);
 		
 		btnIniciarSesion = new JButton("Iniciar Sesi\u00F3n");
 		btnIniciarSesion.addActionListener(this);
