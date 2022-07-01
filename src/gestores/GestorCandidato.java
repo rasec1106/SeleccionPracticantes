@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import interfaces.IGestorCandidato;
 import model.Candidato;
+import model.Convocatoria;
 import util.MySQLConnection;
 
 public class GestorCandidato implements IGestorCandidato {
@@ -231,4 +232,31 @@ public class GestorCandidato implements IGestorCandidato {
 		}
 		return lista;
 	}
+
+	@Override
+	public int registrarseaConvocatoria(Candidato candidate, Convocatoria convocatoria) {
+		int resultado = -1;
+		Connection cn = null;
+		PreparedStatement stm = null;		
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "INSERT INTO tb_Proposal_Candidate VALUES (?,?)";
+			stm = cn.prepareStatement(sql);
+			stm.setString(1,candidate.getDni());
+			stm.setInt(2,convocatoria.getId());
+			resultado = stm.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return resultado;
+	}
+	
+	
 }
