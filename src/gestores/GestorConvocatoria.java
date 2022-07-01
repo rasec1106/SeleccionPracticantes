@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import interfaces.IGestorConvocatoria;
+import model.Candidato;
 import model.Convocatoria;
 import util.MySQLConnection;
 
@@ -319,6 +320,42 @@ public class GestorConvocatoria implements IGestorConvocatoria {
 			}
 		}
 		return lista;
+	}
+
+	@Override
+	public ArrayList<Convocatoria> listarXCandidato(Candidato candidate) {
+			ArrayList<Convocatoria> lista = new ArrayList<Convocatoria>();
+			ResultSet rs = null;
+			Connection cn = null;
+			PreparedStatement stm = null;
+			try {
+				cn = MySQLConnection.getConnection();
+				String sql = "SELECT p.* FROM tb_Proposal p JOIN tb_Proposal_Candidate pc ON pc.idProposal = p.id WHERE pc.dniCandidate = ? ";
+				stm = cn.prepareStatement(sql);
+				stm.setString(1, candidate.getDni());
+				rs = stm.executeQuery();
+				while (rs.next()) {
+					Convocatoria obj = new Convocatoria();
+					obj.setId(rs.getInt("id"));
+					obj.setName(rs.getString("name"));
+					obj.setDescription(rs.getString("Description"));
+					obj.setStartDate(rs.getString("startDate"));
+					obj.setEndDate(rs.getString("endDate"));
+					obj.setPosition(rs.getString("position"));
+					obj.setArea(gestorArea.obtener(rs.getInt("idArea")) );
+					lista.add(obj);
+				}
+			} catch (Exception e) {
+				System.out.println("Error en BD: " + e.getMessage());
+			}finally {
+				try {
+					if(stm != null) stm.close();
+					if(cn != null) cn.close();
+				} catch (Exception e2) {
+					System.out.println("Error en Finally; " + e2.getMessage());
+				}
+			}
+			return lista;
 	}
 
 }

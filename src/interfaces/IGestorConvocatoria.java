@@ -2,6 +2,7 @@ package interfaces;
 
 import java.util.ArrayList;
 
+import model.Candidato;
 import model.Convocatoria;
 
 public interface IGestorConvocatoria {
@@ -15,6 +16,7 @@ public interface IGestorConvocatoria {
 	public ArrayList<Convocatoria> buscarxArea (String filtro);
 	public ArrayList<Convocatoria> buscarxDia (String inicio, String fin);
 	public ArrayList<Convocatoria> buscarxNombreExacto (String filtro);
+	public ArrayList<Convocatoria> listarXCandidato(Candidato candidate);	
 
 	
 	

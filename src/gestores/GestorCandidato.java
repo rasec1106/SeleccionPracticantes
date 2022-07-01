@@ -257,6 +257,8 @@ public class GestorCandidato implements IGestorCandidato {
 		}		
 		return resultado;
 	}
+
+	
 	
 	
 }
