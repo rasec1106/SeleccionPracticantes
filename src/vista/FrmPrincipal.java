@@ -169,12 +169,11 @@ public class FrmPrincipal extends JFrame {
 		escritorio.add(frmListadoPracticantes);
 		escritorio.add(frmListadoConvocatorias);
 		escritorio.add(frmPrueba);
-		escritorio.add(frmRegistroaConvocatoria);
+		
 		frmConvocatorias.setVisible(false);
 		frmListadoPracticantes.setVisible(false);
 		frmListadoConvocatorias.setVisible(false);
 		frmPrueba.setVisible(false);
-		frmRegistroaConvocatoria.setVisible(false);
 		
 	}
 
@@ -212,6 +211,7 @@ public class FrmPrincipal extends JFrame {
 	}
 	protected void actionPerformedMntmNewMenuItem(ActionEvent e) {
 		frmRegistroaConvocatoria =  new FrmRegistroaConvocatoria(usuario);
+		escritorio.add(frmRegistroaConvocatoria);
 		frmRegistroaConvocatoria.setVisible(true);
 	}
 }
