@@ -6,6 +6,7 @@ public class Prueba {
 	private int id;
 	private String name;
 	private ArrayList<Pregunta> questions;
+	private int mark;
 	
 	public Prueba() {
 		super();
@@ -34,7 +35,11 @@ public class Prueba {
 	public void setQuestions(ArrayList<Pregunta> questions) {
 		this.questions = questions;
 	}
-	
-
+	public int getMark() {
+		return mark;
+	}
+	public void setMark(int mark) {
+		this.mark = mark;
+	}	
 
 }

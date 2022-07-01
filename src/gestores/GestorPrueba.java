@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import interfaces.IGestorPrueba;
+import model.Candidato;
 import model.Convocatoria;
 import model.Prueba;
 import util.MySQLConnection;
@@ -113,6 +114,32 @@ public class GestorPrueba implements IGestorPrueba {
 				int idTest = rs.getInt("id");
 				resultado = new GestorPregunta().registrarPreguntas(prueba.getQuestions(), idTest);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return resultado;
+	}
+	@Override
+	public int calificar(Prueba prueba, Candidato candidato) {
+		int resultado = -1;
+		Connection cn = null;
+		PreparedStatement stm = null;		
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "INSERT INTO tb_Test_Candidate VALUES (?,?,?)";
+			stm = cn.prepareStatement(sql);
+			stm.setString(1, candidato.getDni());
+			stm.setInt(2,prueba.getId());
+			stm.setInt(3,prueba.getMark());
+			resultado = stm.executeUpdate();
+			resultado = registrarPreguntas(prueba);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

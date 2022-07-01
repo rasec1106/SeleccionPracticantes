@@ -5,15 +5,25 @@ import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import gestores.GestorCandidato;
 import gestores.GestorConvocatoria;
+import gestores.GestorPrueba;
 import model.Convocatoria;
+import model.Prueba;
+import model.Usuario;
 
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Rectangle;
 
 public class FrmRendirPrueba extends JInternalFrame {
 	/**
@@ -25,6 +35,9 @@ public class FrmRendirPrueba extends JInternalFrame {
 	private GestorConvocatoria gestorConvocatoria = new GestorConvocatoria();
 	private ArrayList<Convocatoria> listaConvocatorias = gestorConvocatoria.listar();
 	private JComboBox<Convocatoria> cboConvocatoria;
+	private Usuario usuario;
+	private int selectedTestId = -1;
+	private FrmPrincipal mainFrame;
 
 	/**
 	 * Launch the application.
@@ -41,11 +54,21 @@ public class FrmRendirPrueba extends JInternalFrame {
 			}
 		});
 	}
+	public FrmRendirPrueba(Usuario user, FrmPrincipal frame) {
+		this();
+		mainFrame = frame;
+		usuario = user;
+		listaConvocatorias = gestorConvocatoria.listarXCandidato(new GestorCandidato().obtener(usuario.getUsername()));
+		CargarCboConvocatoria();
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public FrmRendirPrueba() {
+		setResizable(true);
+		setRootPaneCheckingEnabled(false);
+		setNormalBounds(new Rectangle(100, 100, 447, 286));
 		setTitle("Rendir Prueba");
 		setMaximizable(true);
 		setIconifiable(true);
@@ -58,6 +81,11 @@ public class FrmRendirPrueba extends JInternalFrame {
 		getContentPane().add(lblNewLabel);
 		
 		cboConvocatoria = new JComboBox<Convocatoria>();
+		cboConvocatoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cboConvocatoriaActionPerformed(e);
+			}
+		});
 		cboConvocatoria.setBounds(123, 29, 187, 22);
 		getContentPane().add(cboConvocatoria);
 		
@@ -66,6 +94,12 @@ public class FrmRendirPrueba extends JInternalFrame {
 		getContentPane().add(scrollPane);
 		
 		tblLista = new JTable();
+		tblLista.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tblListaMouseClicked(e);
+			}
+		});
 		tblLista.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -76,6 +110,11 @@ public class FrmRendirPrueba extends JInternalFrame {
 		scrollPane.setViewportView(tblLista);
 		
 		JButton btnRendirPrueba = new JButton("Rendir Prueba");
+		btnRendirPrueba.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnRendirPruebaActionPerformed(e);
+			}
+		});
 		btnRendirPrueba.setBounds(261, 199, 142, 23);
 		getContentPane().add(btnRendirPrueba);
 		CargarCboConvocatoria();
@@ -88,5 +127,37 @@ public class FrmRendirPrueba extends JInternalFrame {
 		for(Convocatoria convocatoria: listaConvocatorias) {
 			cboConvocatoria.addItem(convocatoria);
 		}
+		cboConvocatoria.setSelectedIndex(0);
+		cargarLista();
+	}
+	
+	private void cargarLista() {
+		Convocatoria c = (Convocatoria) cboConvocatoria.getSelectedItem();
+		if(c== null) return;
+		DefaultTableModel modelo = (DefaultTableModel) tblLista.getModel();
+		modelo.getDataVector().clear();
+		
+		ArrayList<Prueba> lista = new GestorPrueba().listarxConvocatoria(c.getId());
+		for(Prueba obj : lista) {
+			Object[] data = {obj.getId(), obj.getName()};
+			modelo.addRow(data);
+		}
+	}
+	protected void cboConvocatoriaActionPerformed(ActionEvent e) {
+		cargarLista();
+		selectedTestId = -1;
+	}
+	
+	protected void btnRendirPruebaActionPerformed(ActionEvent e) {
+		if(selectedTestId == -1) {
+			JOptionPane.showMessageDialog(this, "Debe seleccionar una prueba");
+			return;
+		}
+		FrmPrueba prueba = new FrmPrueba(selectedTestId, usuario);
+		prueba.setVisible(true);
+		mainFrame.addInternalFrame(prueba);
+	}
+	protected void tblListaMouseClicked(MouseEvent e) {
+		selectedTestId = (int)tblLista.getValueAt(tblLista.getSelectedRow(), 0);
 	}
 }

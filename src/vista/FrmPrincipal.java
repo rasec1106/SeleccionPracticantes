@@ -33,7 +33,6 @@ public class FrmPrincipal extends JFrame {
 	private FrmListadoPruebas frmListadoPruebas = new FrmListadoPruebas();
 	private FrmListadoPracticantes frmListadoPracticantes = new FrmListadoPracticantes();
 	private FrmListadoConvocatorias frmListadoConvocatorias = new FrmListadoConvocatorias();
-	private FrmPrueba frmPrueba = new FrmPrueba();
 	private FrmRegistroaConvocatoria frmRegistroaConvocatoria;
 	private Usuario usuario;
 	private JMenu m_Registro;
@@ -143,6 +142,17 @@ public class FrmPrincipal extends JFrame {
 		});
 		m_Reportes.add(mnuListPruebas);
 		
+		m_Registro = new JMenu("Registro");
+		menuBar.add(m_Registro);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Registrarse a Convocatoria");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmNewMenuItem(e);
+			}
+		});
+		m_Registro.add(mntmNewMenuItem);
+		
 		m_Pruebas = new JMenu("Pruebas");
 		menuBar.add(m_Pruebas);
 
@@ -162,17 +172,6 @@ public class FrmPrincipal extends JFrame {
 			}
 		});
 		m_Pruebas.add(mnuRendirPrueba);
-		
-		m_Registro = new JMenu("Registro");
-		menuBar.add(m_Registro);
-		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Registrarse a Convocatoria");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				actionPerformedMntmNewMenuItem(e);
-			}
-		});
-		m_Registro.add(mntmNewMenuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -188,14 +187,11 @@ public class FrmPrincipal extends JFrame {
 	private void inicializarVentanas() {
 		escritorio.add(frmConvocatorias);
 		escritorio.add(frmListadoPracticantes);
-		escritorio.add(frmListadoConvocatorias);
-		escritorio.add(frmPrueba);
-		
+		escritorio.add(frmListadoConvocatorias);		
 		frmConvocatorias.setVisible(false);
 		frmListadoPracticantes.setVisible(false);
 		frmListadoConvocatorias.setVisible(false);
-		frmPrueba.setVisible(false);
-		
+	
 	}
 
 
@@ -224,7 +220,11 @@ public class FrmPrincipal extends JFrame {
 		addInternalFrame(frmListadoPruebas);
 	}
 	protected void mnuPruebaActionPerformed(ActionEvent e) {
-		frmPrueba.setVisible(true);
+		FrmRendirPrueba frm = new FrmRendirPrueba(usuario, this);
+		frm.setBounds(100, 100, 447, 286);
+		frm.setSize(450, 280);
+		escritorio.add(frm);
+		frm.setVisible(true);
 	}
 	
 	public void addInternalFrame(JInternalFrame frame) {
