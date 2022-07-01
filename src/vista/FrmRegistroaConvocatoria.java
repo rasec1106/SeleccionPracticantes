@@ -115,7 +115,7 @@ public class FrmRegistroaConvocatoria extends JInternalFrame {
 	
 	public FrmRegistroaConvocatoria(Usuario user) {
 		this();
-		candidato = candidato;
+		candidato = new GestorCandidato().obtener(user.getUsername());
 	}
 	
 	private void CargarCboConvocatoria() {

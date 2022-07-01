@@ -145,6 +145,18 @@ public class FrmPrincipal extends JFrame {
 		
 		m_Pruebas = new JMenu("Pruebas");
 		menuBar.add(m_Pruebas);
+
+		JMenuItem mnuMisConvocatorias = new JMenuItem("Mis Convocatorias");
+		mnuMisConvocatorias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMnuMisConvocatorias(e);
+			}
+		});
+		m_Pruebas.add(mnuMisConvocatorias);
+		
+		JMenu mnNewMenu = new JMenu("Pruebas");
+		menuBar.add(mnNewMenu);
+
 		
 		JMenuItem mnuRendirPrueba = new JMenuItem("Rendir prueba");
 		mnuRendirPrueba.addActionListener(new ActionListener() {
@@ -226,5 +238,11 @@ public class FrmPrincipal extends JFrame {
 		frmRegistroaConvocatoria =  new FrmRegistroaConvocatoria(usuario);
 		escritorio.add(frmRegistroaConvocatoria);
 		frmRegistroaConvocatoria.setVisible(true);
+	}
+	protected void actionPerformedMnuMisConvocatorias(ActionEvent e) {
+		FrmMisConvocatorias_Candidato frm = new FrmMisConvocatorias_Candidato(usuario);
+		escritorio.add(frm);
+		frm.setVisible(true);
+
 	}
 }
