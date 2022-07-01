@@ -9,6 +9,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import gestores.GestorPermisos;
 import model.Usuario;
 
 import javax.swing.JMenuBar;
@@ -35,6 +36,12 @@ public class FrmPrincipal extends JFrame {
 	private FrmPrueba frmPrueba = new FrmPrueba();
 	private FrmRegistroaConvocatoria frmRegistroaConvocatoria;
 	private Usuario usuario;
+	private JMenu m_Registro;
+	private JMenu m_Pruebas;
+	private JMenu m_Reportes;
+	private JMenu m_Mantenimientos;
+	
+	private GestorPermisos gestorPermisos = new GestorPermisos();
 
 	/**
 	 * Launch the application.
@@ -58,6 +65,11 @@ public class FrmPrincipal extends JFrame {
 	public FrmPrincipal(Usuario user) {
 		this();
 		usuario = user;
+		/*ESTABLECER PERMISOS*/
+		m_Mantenimientos.setVisible(gestorPermisos.obtenerPermisoMenu(1, user.getIdUserType()));
+		m_Reportes.setVisible(gestorPermisos.obtenerPermisoMenu(2, user.getIdUserType()));
+		m_Pruebas.setVisible(gestorPermisos.obtenerPermisoMenu(3, user.getIdUserType()));
+		m_Registro.setVisible(gestorPermisos.obtenerPermisoMenu(4, user.getIdUserType()));
 	}
 	public FrmPrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,8 +89,8 @@ public class FrmPrincipal extends JFrame {
 		});
 		mnuSistema.add(mnuSalir);
 		
-		JMenu mnuMantenimientos = new JMenu("Mantenimientos");
-		menuBar.add(mnuMantenimientos);
+		m_Mantenimientos = new JMenu("Mantenimientos");
+		menuBar.add(m_Mantenimientos);
 		
 		JMenuItem mnuPracticantes = new JMenuItem("Practicantes");
 		mnuPracticantes.addActionListener(new ActionListener() {
@@ -86,7 +98,7 @@ public class FrmPrincipal extends JFrame {
 				actionPerformedMnuPracticantes(e);
 			}
 		});
-		mnuMantenimientos.add(mnuPracticantes);
+		m_Mantenimientos.add(mnuPracticantes);
 		
 		JMenuItem mnuConvocatorias = new JMenuItem("Convocatorias");
 		mnuConvocatorias.addActionListener(new ActionListener() {
@@ -94,7 +106,7 @@ public class FrmPrincipal extends JFrame {
 				actionPerformedMnuConvocatorias(e);
 			}
 		});
-		mnuMantenimientos.add(mnuConvocatorias);
+		m_Mantenimientos.add(mnuConvocatorias);
 		
 		JMenuItem mnuPruebas = new JMenuItem("Pruebas de Conocimiento");
 		mnuPruebas.addActionListener(new ActionListener() {
@@ -102,10 +114,10 @@ public class FrmPrincipal extends JFrame {
 				actionPerformedMnuPruebas(e);
 			}
 		});
-		mnuMantenimientos.add(mnuPruebas);
+		m_Mantenimientos.add(mnuPruebas);
 		
-		JMenu mnuNewMenu_2 = new JMenu("Reportes");
-		menuBar.add(mnuNewMenu_2);
+		m_Reportes = new JMenu("Reportes");
+		menuBar.add(m_Reportes);
 		
 		JMenuItem mnuListPracticantes = new JMenuItem("Listado de Practicantes");
 		mnuListPracticantes.addActionListener(new ActionListener() {
@@ -113,7 +125,7 @@ public class FrmPrincipal extends JFrame {
 				actionPerformedMnuListPracticantes(e);
 			}
 		});
-		mnuNewMenu_2.add(mnuListPracticantes);
+		m_Reportes.add(mnuListPracticantes);
 		
 		JMenuItem mnuListConvocatorias = new JMenuItem("Listado de Convocatorias");
 		mnuListConvocatorias.addActionListener(new ActionListener() {
@@ -121,7 +133,7 @@ public class FrmPrincipal extends JFrame {
 				actionPerformedMnuListConvocatorias(e);
 			}
 		});
-		mnuNewMenu_2.add(mnuListConvocatorias);
+		m_Reportes.add(mnuListConvocatorias);
 		
 		JMenuItem mnuListPruebas = new JMenuItem("Listado de Pruebas de Conocimiento");
 		mnuListPruebas.addActionListener(new ActionListener() {
@@ -129,10 +141,10 @@ public class FrmPrincipal extends JFrame {
 				actionPerformedMnuListPruebas(e);
 			}
 		});
-		mnuNewMenu_2.add(mnuListPruebas);
+		m_Reportes.add(mnuListPruebas);
 		
-		JMenu mnNewMenu = new JMenu("Pruebas");
-		menuBar.add(mnNewMenu);
+		m_Pruebas = new JMenu("Pruebas");
+		menuBar.add(m_Pruebas);
 		
 		JMenuItem mnuRendirPrueba = new JMenuItem("Rendir prueba");
 		mnuRendirPrueba.addActionListener(new ActionListener() {
@@ -140,10 +152,10 @@ public class FrmPrincipal extends JFrame {
 				mnuPruebaActionPerformed(e);
 			}
 		});
-		mnNewMenu.add(mnuRendirPrueba);
+		m_Pruebas.add(mnuRendirPrueba);
 		
-		JMenu mnuRegistro = new JMenu("Registro");
-		menuBar.add(mnuRegistro);
+		m_Registro = new JMenu("Registro");
+		menuBar.add(m_Registro);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Registrarse a Convocatoria");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -151,7 +163,7 @@ public class FrmPrincipal extends JFrame {
 				actionPerformedMntmNewMenuItem(e);
 			}
 		});
-		mnuRegistro.add(mntmNewMenuItem);
+		m_Registro.add(mntmNewMenuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -176,6 +188,7 @@ public class FrmPrincipal extends JFrame {
 		frmPrueba.setVisible(false);
 		
 	}
+
 
 	protected void actionPerformedMnuSalir(ActionEvent e) {
 		System.exit(DISPOSE_ON_CLOSE);
