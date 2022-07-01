@@ -28,7 +28,9 @@ public class FrmListadoPruebas extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmListadoPruebas() {
-		setBounds(100, 100, 450, 300);
+		setTitle("Lista de Pruebas");
+		setBounds(100, 100, 493, 345);
+		getContentPane().setLayout(null);
 
 	}
 
