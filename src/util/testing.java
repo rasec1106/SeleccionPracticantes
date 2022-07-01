@@ -1,5 +1,6 @@
 package util;
 
+import gestores.GestorUsuario;
 
 public class testing {
 
@@ -7,8 +8,8 @@ public class testing {
 		// TODO Auto-generated method stub
 		//FileUtils.openFile(".\\filesDirectory\\CHHV_Curriculum.pdf");
 		try {
-			FileUtils.copyFile(".\\filesDirectory\\CHHV_Curriculum.pdf", ".\\filesDirectory\\CHHV_Curriculum2.pdf");		
-			System.out.println("OK");
+			int res = new GestorUsuario().registrarCandidato("22222222","cibertec");
+			System.out.println(res);
 		}catch (Exception e) {
 			// TODO: handle exception
 		}

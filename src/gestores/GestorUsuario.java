@@ -50,20 +50,24 @@ public class GestorUsuario implements IGestorUsuario {
 	}
 
 	@Override
-	public boolean validarAcceso(Usuario obj) {
-		boolean esValido = false;
+	public Usuario validarAcceso(String username, String password) {
+		Usuario user = null;
 		ResultSet rs = null;
 		Connection cn = null;
 		PreparedStatement stm = null;
 		try {
 			cn = MySQLConnection.getConnection();
-			String sql = "{CALL usp_ValidarUsuario(?, ?)}";
+			String sql = "SELECT * from tb_User WHERE username= ? and password = ?";
 			stm = cn.prepareStatement(sql);
-			stm.setString(1, obj.getUsername());;
-			stm.setString(2, obj.getPassword());
+			stm.setString(1,username);;
+			stm.setString(2, password);
 			rs = stm.executeQuery();
 			while (rs.next()) {
-				esValido = true;
+				user = new Usuario();
+				user.setId(rs.getInt("id"));
+				user.setUsername(rs.getString("username"));
+				user.setPassword(rs.getString("password"));
+				user.setIdUserType(rs.getInt("idUserType"));
 			}
 		} catch (Exception e) {
 			System.out.println("Error en BD: " + e.getMessage());
@@ -75,7 +79,33 @@ public class GestorUsuario implements IGestorUsuario {
 				System.out.println("Error en Finally; " + e2.getMessage());
 			}
 		}
-		return esValido;
+		return user;
+	}
+
+	@Override
+	public int registrarCandidato(String username, String password) {
+		int resultado = -1;
+		Connection cn = null;
+		PreparedStatement stm = null;		
+		try {
+			cn = MySQLConnection.getConnection();
+			String sql = "INSERT INTO tb_User(username, password, idUserType) VALUES (?,?,?)";
+			stm = cn.prepareStatement(sql);
+			stm.setString(1,username);
+			stm.setString(2,password);
+			stm.setInt(3, 3);
+			resultado = stm.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) stm.close();
+				if (cn != null) cn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}		
+		return resultado;
 	}
 
 }

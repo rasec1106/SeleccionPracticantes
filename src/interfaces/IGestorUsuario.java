@@ -10,7 +10,9 @@ public interface IGestorUsuario {
 	
 	public Usuario obtener(int id);
 	
-	public boolean validarAcceso(Usuario obj);
+	public Usuario validarAcceso(String username, String password);
+	public int registrarCandidato(String username, String password);
+	
 	/*public ArrayList<Usuario> listar();
 	
 	public int registrar(Usuario obj);
