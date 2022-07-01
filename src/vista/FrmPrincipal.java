@@ -30,6 +30,7 @@ public class FrmPrincipal extends JFrame {
 	private FrmListadoPracticantes frmListadoPracticantes = new FrmListadoPracticantes();
 	private FrmListadoConvocatorias frmListadoConvocatorias = new FrmListadoConvocatorias();
 	private FrmPrueba frmPrueba = new FrmPrueba();
+	private FrmRegistroaConvocatoria frmRegistroaConvocatoria = new FrmRegistroaConvocatoria();
 	
 
 	/**
@@ -133,6 +134,17 @@ public class FrmPrincipal extends JFrame {
 			}
 		});
 		mnNewMenu.add(mnuRendirPrueba);
+		
+		JMenu mnuRegistro = new JMenu("Registro");
+		menuBar.add(mnuRegistro);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Registrarse a Convocatoria");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmNewMenuItem(e);
+			}
+		});
+		mnuRegistro.add(mntmNewMenuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -149,12 +161,13 @@ public class FrmPrincipal extends JFrame {
 		escritorio.add(frmConvocatorias);
 		escritorio.add(frmListadoPracticantes);
 		escritorio.add(frmListadoConvocatorias);
-
 		escritorio.add(frmPrueba);
+		escritorio.add(frmRegistroaConvocatoria);
 		frmConvocatorias.setVisible(false);
 		frmListadoPracticantes.setVisible(false);
 		frmListadoConvocatorias.setVisible(false);
 		frmPrueba.setVisible(false);
+		frmRegistroaConvocatoria.setVisible(false);
 		
 	}
 
@@ -189,5 +202,8 @@ public class FrmPrincipal extends JFrame {
 	public void addInternalFrame(JInternalFrame frame) {
 		escritorio.add(frame);
 		frame.setVisible(true);
+	}
+	protected void actionPerformedMntmNewMenuItem(ActionEvent e) {
+		frmRegistroaConvocatoria.setVisible(true);
 	}
 }

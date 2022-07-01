@@ -14,5 +14,8 @@ public interface IGestorConvocatoria {
 	public ArrayList<Convocatoria> buscarxNombre (String filtro);
 	public ArrayList<Convocatoria> buscarxArea (String filtro);
 	public ArrayList<Convocatoria> buscarxDia (String inicio, String fin);
+	public ArrayList<Convocatoria> buscarxNombreExacto (String filtro);
+
+	
 	
 }
