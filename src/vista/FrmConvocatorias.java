@@ -69,6 +69,8 @@ public class FrmConvocatorias extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmConvocatorias() {
+		setMaximizable(true);
+		setIconifiable(true);
 		setBounds(100, 100, 674, 573);
 		getContentPane().setLayout(null);
 		

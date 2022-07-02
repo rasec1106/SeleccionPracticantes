@@ -67,6 +67,9 @@ public class FrmRegistroaConvocatoria extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmRegistroaConvocatoria() {
+		setMaximizable(true);
+		setIconifiable(true);
+		setClosable(true);
 		setBounds(100, 100, 667, 263);
 		getContentPane().setLayout(null);
 		

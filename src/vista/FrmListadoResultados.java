@@ -49,6 +49,9 @@ public class FrmListadoResultados extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmListadoResultados() {
+		setMaximizable(true);
+		setIconifiable(true);
+		setClosable(true);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 		
